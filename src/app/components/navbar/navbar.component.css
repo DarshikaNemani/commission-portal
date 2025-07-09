@@ -1,0 +1,9 @@
+.navbar .container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-collapse {
+  flex-grow: 0;
+}

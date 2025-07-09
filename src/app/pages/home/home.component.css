@@ -1,0 +1,11 @@
+.home-main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+ul{
+    display: flex;
+    direction: column;
+    list-style: none;
+}

@@ -17,8 +17,9 @@
                             </div>
                         </div>
                     </form>
+
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="commissionType" id="cash" value="cash"
+                        <input class="form-check-input" type="radio" name="commissionType" id="cash" value="Cash"
                             [(ngModel)]="commissionType">
                         <label class="form-check-label" for="cash">
                             Cash
@@ -26,11 +27,15 @@
                     </div>
                     <div class="form-check">
                         <input class="form-check-input" type="radio" name="commissionType" id="wholesale"
-                            value="wholesale" [(ngModel)]="commissionType">
+                            value="Wholesale" [(ngModel)]="commissionType">
                         <label class="form-check-label" for="wholesale">
                             Wholesale
                         </label>
                     </div>
+
+                    <input *ngIf="commissionType === 'Wholesale'" class="form-control" placeholder="Party Name"
+                        [(ngModel)]="partyName" />
+
                 </div>
                 <button class="btn btn-primary" (click)="addEntry()">Add Entry</button>
             </div>

@@ -4,16 +4,15 @@
 
         <div class="card text-center">
             <div class="card-body">
-                <h5 class="card-title">Add Absence</h5>
+                <h5 class="card-title">Add Absent</h5>
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
-                        data-bs-toggle="dropdown" aria-expanded="false">
-                        Select Employee
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ selectedEmployee }}
                     </button>
-                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><button class="dropdown-item">Arjun</button></li>
-                        <li><button class="dropdown-item">Brijesh</button></li>
-                        <li><button class="dropdown-item">Chirag</button></li>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" (click)="selectEmployee('Arjun')">Arjun</button></li>
+                        <li><button class="dropdown-item" (click)="selectEmployee('Brijesh')">Brijesh</button></li>
+                        <li><button class="dropdown-item" (click)="selectEmployee('Chirag')">Chirag</button></li>
                     </ul>
                 </div>
                 <form class="row row-cols-sm-auto">
@@ -21,18 +20,28 @@
                         <div class="input-group">
                             <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
                                 ngbDatepicker #d="ngbDatepicker" />
-                            <button class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
-                                type="button"></button>
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                <i class="bi bi-calendar3"></i>
+                            </button>
                         </div>
                     </div>
                 </form>
-                <a href="#" class="btn btn-primary">Submit</a>
+                <button class="btn btn-primary" (click)="submitAbsent()">Submit</button>
             </div>
         </div>
-        <div class="card text-center">
+
+        <!-- Display Absent Records -->
+        <div class="card text-center" *ngFor="let absent of absentRecords">
             <div class="card-body">
-                <p>(Employee name) - (date) </p>
-                <a href="#" class="btn btn-primary">Delete</a>
+                <p>{{ absent.name }} - {{ formatDate(absent.date) }}</p>
+                <button class="btn btn-danger">Delete</button>
+            </div>
+        </div>
+
+        <!-- No Records Message -->
+        <div class="card text-center" *ngIf="absentRecords.length === 0">
+            <div class="card-body">
+                <p>No absent records found</p>
             </div>
         </div>
     </div>

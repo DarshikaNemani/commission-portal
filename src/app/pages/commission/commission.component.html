@@ -1,0 +1,47 @@
+<div class="main-container">
+    <app-navbar />
+    <div class="content-wrapper">
+
+        <h1>Commission Report</h1>
+        <div class="date-input-main">
+            <p>From:</p>
+            <form class="row row-cols-sm-auto">
+                <div class="col-12">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="fromDate" [(ngModel)]="fromDate"
+                            ngbDatepicker #fromDatePicker="ngbDatepicker" />
+                        <button class="btn btn-outline-secondary" (click)="fromDatePicker.toggle()" type="button">
+                            <i class="bi bi-calendar3"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <p>To:</p>
+            <form class="row row-cols-sm-auto">
+                <div class="col-12">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="toDate" [(ngModel)]="toDate"
+                            ngbDatepicker #toDatePicker="ngbDatepicker" />
+                        <button class="btn btn-outline-secondary" (click)="toDatePicker.toggle()" type="button">
+                            <i class="bi bi-calendar3"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <p>Arjun's Commission: </p>
+                <p>Brijesh  's Commission: </p>
+                <p>Chirag's Commission: </p>
+            </div>
+        </div>
+        <h3>Absents</h3>
+        <div class="card">
+            <div class="card-body">
+            <p>Absent Date - Employee Name</p>
+            </div>
+        </div>
+    </div>
+    <app-footer />
+</div>

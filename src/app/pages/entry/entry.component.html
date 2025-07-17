@@ -1,0 +1,96 @@
+<div class="main-container">
+    <app-navbar />
+    <div class="content-wrapper">
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Summary
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><button class="dropdown-item" (click)="showSection('daily')">Daily Entries</button></li>
+                <li><button class="dropdown-item" (click)="showSection('monthly')">Monthly Summary</button></li>
+                <li><button class="dropdown-item" (click)="showSection('overall')">Overall Summary</button></li>
+            </ul>
+        </div>
+
+        <div class="daily-main" *ngIf="activeSection === 'daily'">
+            <div>
+                <h1>Daily Entries</h1>
+                <p>Entries on {{ model.day }}/{{ model.month }}/{{ model.year }}</p>
+            </div>
+            <form class="row row-cols-sm-auto">
+                <div class="col-12">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model" ngbDatepicker
+                            #d="ngbDatepicker" />
+                        <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                            <i class="bi bi-calendar3"></i>
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title">Amount - type</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="monthly-main" *ngIf="activeSection === 'monthly'">
+            <div>
+                <h1>Monthly Entries</h1>
+                <p>Entries in {{ model.month }}/{{ model.year }}</p>
+            </div>
+            <form class="row row-cols-sm-auto">
+                <div class="col-12">
+                    <div class="col-md-4">
+                        <select id="inputState" class="form-select">
+                            <option selected>Month</option>
+                            <option>01</option>
+                            <option>02</option>
+                            <option>03</option>
+                            <option>04</option>
+                            <option>05</option>
+                            <option>06</option>
+                            <option>07</option>
+                            <option>08</option>
+                            <option>09</option>
+                            <option>10</option>
+                            <option>11</option>
+                            <option>12</option>
+                        </select>
+                        <input class="form-control" name="dp" [(ngModel)]="model.year" type="number" />
+                    </div>
+                </div>
+            </form>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title">Date</p>
+                    <p class="card-title">Total Cash: </p>
+                    <p class="card-title">Total Wholesale:</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="overall-main" *ngIf="activeSection === 'overall'">
+            <div>
+                <h1>Overall Entries</h1>
+            </div>
+            <div class="card">
+                <div class="card-body">
+                    <p class="card-title">Total Cash: </p>
+                    <p class="card-title">Total Wholesale:</p>
+                </div>
+            </div>
+            <div class="month-card card">
+                <div class="card-body">
+                    <p class="card-title">Month: {{ model.month }}/{{ model.year }}</p>
+                    <p class="card-title">Total Cash: </p>
+                    <p class="card-title">Total Wholesale:</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer />
+</div>

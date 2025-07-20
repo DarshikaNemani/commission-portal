@@ -1,0 +1,51 @@
+.home-main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 150px;
+}
+ul{
+    display: flex;
+    direction: column;
+    list-style: none;
+}
+
+.card{
+    border: 2px solid #000;
+    padding: 4px;
+    width: 800px;
+    border-radius: 12px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 10px;
+    padding: 12px;
+    text-align: center;
+}
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-item-wrapper:hover .dropdown-item {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #e9ecef;
+}
+
+.btn-outline-danger {
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-font-size: 0.75rem;
+}

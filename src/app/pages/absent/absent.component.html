@@ -1,0 +1,48 @@
+<div class="main-container">
+    <app-navbar />
+    <div class="content-wrapper">
+
+        <div class="card text-center">
+            <div class="card-body">
+                <h5 class="card-title">Add Absent</h5>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ selectedEmployee }}
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><button class="dropdown-item" (click)="selectEmployee('Arjun')">Arjun</button></li>
+                        <li><button class="dropdown-item" (click)="selectEmployee('Brijesh')">Brijesh</button></li>
+                        <li><button class="dropdown-item" (click)="selectEmployee('Chirag')">Chirag</button></li>
+                    </ul>
+                </div>
+                <form class="row row-cols-sm-auto">
+                    <div class="col-12">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
+                                ngbDatepicker #d="ngbDatepicker" />
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                <i class="bi bi-calendar3"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <button class="btn btn-primary" (click)="submitAbsent()">Submit</button>
+            </div>
+        </div>
+
+        <!-- Display Absent Records -->
+        <div class="card text-center" *ngFor="let absent of absentRecords">
+            <div class="card-body">
+                <p>{{ absent.name }} - {{ formatDate(absent.date) }}</p>
+            </div>
+        </div>
+
+        <!-- No Records Message -->
+        <div class="card text-center" *ngIf="absentRecords.length === 0">
+            <div class="card-body">
+                <p>No absent records found</p>
+            </div>
+        </div>
+    </div>
+    <app-footer />
+</div>

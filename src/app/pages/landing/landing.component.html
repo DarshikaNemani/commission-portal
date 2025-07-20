@@ -1,0 +1,67 @@
+<div class="main-container">
+    <app-navbar />
+    <div class="content-wrapper">
+        <div class="row-1">
+            <div class="row-1-col-1">
+                <h1>Hello,</h1>
+                <h6>Welcome Back!</h6>
+            </div>
+            <div class="row-1-col-2 card">
+                <h1>{{model.day}}/{{model.month}}/{{model.year}}</h1>
+                <h3>{{getDayName()}}</h3>
+            </div>
+        </div>
+        <div class="row-2">
+            <div class="row-2-col-1 card">
+                <a class="nav-link" routerLink="/home" routerLinkActive="active">Click to Enter Commission!</a>
+            </div>
+            <div class="row-2-col-2 card">
+                <h1>Attendance</h1>
+                <p>Pie chart</p>
+            </div>
+        </div>
+        <div class="row-3 card">
+            <h3>Total</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <td></td>
+                        <td>Daily</td>
+                        <td>Monthly</td>
+                        <td>Yearly</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Total Cash:</td>
+                        <td>₹{{ (dailyEntries?.totalCash || 0) | number:'1.2-2' }}</td>
+                        <td>₹{{ (monthlyEntries?.totalCash || 0) | number:'1.2-2' }}</td>
+                        <td>₹{{ (overallEntries?.totalCash || 0) | number:'1.2-2' }}</td>
+                    </tr>
+                    <tr>
+                        <td>Total Wholesale:</td>
+                        <td>₹{{ (dailyEntries?.totalWholesale || 0) | number:'1.2-2' }}</td>
+                        <td>₹{{ (monthlyEntries?.totalWholesale || 0) | number:'1.2-2' }}</td>
+                        <td>₹{{ (overallEntries?.totalWholesale || 0) | number:'1.2-2' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <app-footer />
+</div>
+
+<!-- <h1>Commission Portal</h1>
+            <div class="home-pages-list">
+                <span>
+                    <button>Home</button>
+                </span>
+                <span>
+                    <button>Entry Summary</button>
+                </span>
+                <span>
+                    <button>Commission</button>
+                </span>
+                <span>
+                    <button>Manage Absents</button>
+                </span> -->

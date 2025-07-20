@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-white">
+  <div class="container-fluid">
+    <a class="navbar-brand" routerLink="">Commission Portal</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/entry" routerLinkActive="active">Entry Summary</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/commission" routerLinkActive="active">Commission</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/absent" routerLinkActive="active">Absentee Records</a>
+        </li>
+        <li class="nav-item" *ngIf="!isAdminLoggedIn">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Panel</a>
+        </li>
+        <li class="nav-item" *ngIf="isAdminLoggedIn">
+          <button class="nav-link btn btn-link" (click)="logout()">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

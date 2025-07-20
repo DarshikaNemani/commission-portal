@@ -1,0 +1,43 @@
+.content-wrapper{
+    flex-direction: column;
+}
+
+.daily-main {
+    margin-top: 20px;
+}
+
+.head-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    color: #000;
+    border: 2px solid #000;
+    border-radius: 12px;
+}
+.dropdown-menu {
+    padding: 0;
+}
+
+form {
+    margin: 24px 0;
+}
+
+.dropdown {
+    margin-top: 12px;
+    text-align: end;
+}
+
+.ngb-dp-content {
+    color: #000;
+}
+
+.card-body {
+    border: 2px solid #000;
+    border-radius: 12px;
+
+    p{
+        color: #000;
+    }
+}

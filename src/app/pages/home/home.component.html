@@ -1,0 +1,87 @@
+<div class="main-container">
+    <app-navbar />
+    <div class="content-wrapper">
+        <div class="home-main">
+            <div class="card">
+                <div class="card-title">Add Commission Entry</div>
+                <div class="card-body">
+                    <input class="form-control" name="Amount" type="text"
+                        placeholder="Amount (use comma for bulk: 100, 200, 300)" [(ngModel)]="amount" />
+
+                    <form class="row row-cols-sm-auto">
+                        <div class="col-12">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
+                                    ngbDatepicker #d="ngbDatepicker" />
+                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                    <i class="bi bi-calendar3"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="commissionType" id="cash" value="Cash"
+                            [(ngModel)]="commissionType">
+                        <label class="form-check-label" for="cash">
+                            Cash
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="commissionType" id="wholesale"
+                            value="Wholesale" [(ngModel)]="commissionType">
+                        <label class="form-check-label" for="wholesale">
+                            Wholesale
+                        </label>
+                    </div>
+
+                    <!-- Party selection for Wholesale WITHOUT bulk -->
+                    <div *ngIf="commissionType === 'Wholesale' && !amount.includes(',')" class="mb-3">
+                        <div class="dropdown" [class.show]="isDropdownOpen">
+                            <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button"
+                                (click)="toggleDropdown()" [attr.aria-expanded]="isDropdownOpen">
+                                {{ selectedParty || 'Select Party' }}
+                            </button>
+
+                            <div class="dropdown-menu w-100" [class.show]="isDropdownOpen">
+                                <div *ngFor="let party of parties" class="dropdown-item-wrapper">
+                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                                        (click)="selectPartyFromDropdown(party.name, $event)">
+                                        <span>{{ party.name }}</span>
+                                        <button *ngIf="isAdminLoggedIn" type="button"
+                                            class="btn btn-sm btn-outline-danger ms-2"
+                                            (click)="deleteParty(party._id, $event)" title="Delete party">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </a>
+                                </div>
+                                <a class="dropdown-item" href="#" (click)="showAddPartyInput($event)">
+                                    Other
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- New party input -->
+                    <div *ngIf="addParty" class="mt-2">
+                        <div class="input-group">
+                            <input class="form-control" placeholder="Enter new party name" [(ngModel)]="partyName"
+                                (keyup.enter)="confirmAddParty()" />
+                            <button class="btn btn-success" type="button" (click)="confirmAddParty()"
+                                [disabled]="!partyName.trim()">
+                                Add
+                            </button>
+                            <button class="btn btn-secondary" type="button" (click)="cancelAddParty()">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+                <button class="btn btn-primary" (click)="addEntry()">Add Entry</button>
+            </div>
+        </div>
+    </div>
+    <app-footer />
+</div>

@@ -1,0 +1,24 @@
+.navbar .container-fluid {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1400px;
+
+  .navbar-brand {
+    color: #000;
+  }
+}
+
+.navbar-collapse {
+  flex-grow: 0;
+
+  .nav-item {
+    .nav-link {
+      color: #000;
+
+      &:hover {
+        color: #007bff;
+      }
+    }
+  }
+}

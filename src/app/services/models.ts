@@ -48,3 +48,8 @@ export interface PostAbsentModel {
   date: string;
 }
 
+export interface PartyModel {
+  _id: string;
+  name: string;
+  __v: number;
+}

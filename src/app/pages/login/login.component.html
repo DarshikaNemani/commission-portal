@@ -5,8 +5,8 @@
         <div class="admin-main card card-body">
             <h1>Admin Login</h1>
             <label for="password">Enter Password</label>
-            <input type="password">
-            <button>Login</button>
+            <input type="password" [(ngModel)]="password" id="password" class="form-control">
+            <button class="btn btn-primary mt-2" (click)="adminLogin()">Login</button>
         </div>
     </div>
     <app-footer />

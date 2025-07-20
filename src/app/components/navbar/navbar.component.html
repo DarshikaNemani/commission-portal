@@ -18,8 +18,11 @@
         <li class="nav-item">
           <a class="nav-link" routerLink="/absent" routerLinkActive="active">Absentee Records</a>
         </li>
-        <li class="nav-item">
+        <li class="nav-item" *ngIf="!isAdminLoggedIn">
           <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin Panel</a>
+        </li>
+        <li class="nav-item" *ngIf="isAdminLoggedIn">
+          <button class="nav-link btn btn-link" (click)="logout()">Logout</button>
         </li>
       </ul>
     </div>

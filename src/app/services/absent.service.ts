@@ -11,10 +11,10 @@ export class AbsentService {
   constructor(private readonly httpService: HttpService) { }
 
   postAbsent(absentData: PostAbsentModel): Observable<any> {
-    return this.httpService.postApi('/api/entries/absents/', absentData);
+    return this.httpService.postApi('/api/entries/absents', absentData);
   }
 
   getAbsents(): Observable<any> {
-    return this.httpService.getApi('/api/entries/absents/');
+    return this.httpService.getApi('/api/entries/absents');
   }
 }

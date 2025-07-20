@@ -9,7 +9,7 @@
                 <div class="col-12">
                     <div class="input-group">
                         <input class="form-control" placeholder="yyyy-mm-dd" name="fromDate" [(ngModel)]="fromDate"
-                            ngbDatepicker #fromDatePicker="ngbDatepicker" />
+                            ngbDatepicker #fromDatePicker="ngbDatepicker" (ngModelChange)="onDateChange()" />
                         <button class="btn btn-outline-secondary" (click)="fromDatePicker.toggle()" type="button">
                             <i class="bi bi-calendar3"></i>
                         </button>
@@ -21,7 +21,7 @@
                 <div class="col-12">
                     <div class="input-group">
                         <input class="form-control" placeholder="yyyy-mm-dd" name="toDate" [(ngModel)]="toDate"
-                            ngbDatepicker #toDatePicker="ngbDatepicker" />
+                            ngbDatepicker #toDatePicker="ngbDatepicker" (ngModelChange)="onDateChange()" />
                         <button class="btn btn-outline-secondary" (click)="toDatePicker.toggle()" type="button">
                             <i class="bi bi-calendar3"></i>
                         </button>
@@ -29,18 +29,27 @@
                 </div>
             </form>
         </div>
+
         <div class="card">
             <div class="card-body">
-                <p>Arjun's Commission: </p>
-                <p>Brijesh  's Commission: </p>
-                <p>Chirag's Commission: </p>
+                <p>Arjun's Commission: ₹{{ commissions['Arjun'] | number:'1.2-2' }}</p>
+                <p>Brijesh's Commission: ₹{{ commissions['Brijesh'] | number:'1.2-2' }}</p>
+                <p>Chirag's Commission: ₹{{ commissions['Chirag'] | number:'1.2-2' }}</p>
             </div>
         </div>
+
         <h3>Absents</h3>
-        <div class="card">
-            <div class="card-body">
-            <p>Absent Date - Employee Name</p>
+        <div class="">
+            <div *ngIf="absents.length > 0; else noAbsents">
+                <div class="card" *ngFor="let absent of absents">
+                    <div class="card-body">
+                        <p>{{ absent.name }} - {{ formatDate(absent.date) }}</p>
+                    </div>
+                </div>
             </div>
+            <ng-template #noAbsents>
+                <p>No absent records found</p>
+            </ng-template>
         </div>
     </div>
     <app-footer />

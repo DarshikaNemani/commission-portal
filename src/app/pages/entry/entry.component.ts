@@ -9,6 +9,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { CommonModule } from '@angular/common';
 import { EntryService } from '../../services/entry.service';
+import { AdminService } from '../../services/admin.service';
 import {
   DayEntriesResponse,
   MonthEntriesResponse,
@@ -32,6 +33,7 @@ export class EntryComponent {
   model: NgbDateStruct;
   activeSection: string = 'daily';
   selectedMonth: number = 1;
+  isAdminLoggedIn: boolean = false;
 
   dailyEntries: DayEntriesResponse | null = null;
   monthlyEntries: MonthEntriesResponse | null = null;
@@ -45,7 +47,8 @@ export class EntryComponent {
   monthlyError: string | null = null;
   overallError: string | null = null;
 
-editingEntry: any = null;
+  editingEntry: any = null;
+  isEditing: boolean = false;
 
   numbers: number[] = Array(12)
     .fill(0)
@@ -53,11 +56,17 @@ editingEntry: any = null;
 
   constructor(
     readonly calendar: NgbCalendar,
-    private readonly entryService: EntryService
+    private readonly entryService: EntryService,
+    private readonly adminService: AdminService
   ) {
     this.model = this.calendar.getToday();
     this.selectedMonth = this.model.month;
     this.loadDailyEntries();
+
+    // Subscribe to admin login status
+    this.adminService.isLoggedIn$.subscribe(isLoggedIn => {
+      this.isAdminLoggedIn = isLoggedIn;
+    });
   }
 
   showSection(section: string) {
@@ -146,7 +155,7 @@ editingEntry: any = null;
     const dateMap = new Map();
 
     entries.forEach((entry) => {
-      const date = entry.date.split('T')[0]; // Get date part only
+      const date = entry.date.split('T')[0];
 
       if (!dateMap.has(date)) {
         dateMap.set(date, {
@@ -225,58 +234,49 @@ editingEntry: any = null;
     this.loadOverallEntries();
   }
 
-  // Add these properties
-isEditing: boolean = false;
+  editEntry(entry: any) {
+    this.editingEntry = { ...entry };
+    this.isEditing = true;
+  }
 
-// Edit entry method
-editEntry(entry: any) {
-  this.editingEntry = { ...entry };
-  this.isEditing = true;
-}
+  updateEntry() {
+    if (!this.editingEntry) return;
 
-// Update entry method
-updateEntry() {
-  if (!this.editingEntry) return;
+    const updateData = {
+      amount: this.editingEntry.amount,
+      date: this.editingEntry.date,
+      type: this.editingEntry.type,
+      partyName: this.editingEntry.partyName
+    };
 
-  const updateData = {
-    amount: this.editingEntry.amount,
-    date: this.editingEntry.date,
-    type: this.editingEntry.type,
-    partyName: this.editingEntry.partyName
-  };
-
-  this.entryService.updateEntry(this.editingEntry._id, updateData).subscribe({
-    next: (response) => {
-      console.log('Entry updated successfully:', response);
-      this.cancelEdit();
-      this.loadDailyEntries(); // Refresh data
-    },
-    error: (error) => {
-      console.error('Error updating entry:', error);
-    }
-  });
-}
-
-// Delete entry method
-deleteEntry(entryId: string) {
-  if (confirm('Are you sure you want to delete this entry?')) {
-    this.entryService.deleteEntry(entryId).subscribe({
+    this.entryService.updateEntry(this.editingEntry._id, updateData).subscribe({
       next: (response) => {
-        console.log('Entry deleted successfully:', response);
-        this.loadDailyEntries(); // Refresh data
+        console.log('Entry updated successfully:', response);
+        this.cancelEdit();
+        this.loadDailyEntries();
       },
       error: (error) => {
-        console.error('Error deleting entry:', error);
+        console.error('Error updating entry:', error);
       }
     });
   }
-}
 
-// Cancel edit method
-cancelEdit() {
-  this.editingEntry = null;
-  this.isEditing = false;
-}
+  deleteEntry(entryId: string) {
+    if (confirm('Are you sure you want to delete this entry?')) {
+      this.entryService.deleteEntry(entryId).subscribe({
+        next: (response) => {
+          console.log('Entry deleted successfully:', response);
+          this.loadDailyEntries();
+        },
+        error: (error) => {
+          console.error('Error deleting entry:', error);
+        }
+      });
+    }
+  }
 
-  
+  cancelEdit() {
+    this.editingEntry = null;
+    this.isEditing = false;
+  }
 }

@@ -65,10 +65,12 @@
                             <p class="card-title">{{ entry.type }}</p>
                             <p *ngIf="entry.type === 'Wholesale'" class="card-text">Party: {{ entry.partyName }}</p>
                             <p class="card-text">Amount: ₹{{ entry.amount | number:'1.2-2' }}</p>
-                            <button class="btn btn-outline-primary me-2" (click)="editEntry(entry)">
+                            <button *ngIf="isAdminLoggedIn" class="btn btn-outline-primary me-2"
+                                (click)="editEntry(entry)">
                                 Edit
                             </button>
-                            <button class="btn btn-outline-danger" (click)="deleteEntry(entry._id)">
+                            <button *ngIf="isAdminLoggedIn" class="btn btn-outline-danger"
+                                (click)="deleteEntry(entry._id)">
                                 Delete
                             </button>
                         </div>
@@ -108,7 +110,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <!-- Monthly Section -->

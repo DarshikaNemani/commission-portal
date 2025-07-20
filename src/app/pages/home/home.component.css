@@ -26,3 +26,26 @@ ul{
     padding: 12px;
     text-align: center;
 }
+
+.dropdown-menu {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.dropdown-item-wrapper:hover .dropdown-item {
+  background-color: #f8f9fa;
+}
+
+.dropdown-item {
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: #e9ecef;
+}
+
+.btn-outline-danger {
+  --bs-btn-padding-y: 0.25rem;
+  --bs-btn-padding-x: 0.5rem;
+  --bs-btn-font-size: 0.75rem;
+}

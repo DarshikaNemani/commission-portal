@@ -1,0 +1,13 @@
+.footer {
+    padding: 8px;
+    border-top: 8px solid #fff;
+    border-bottom: 8px solid #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    
+    p{
+        margin: 0;
+    }
+}

@@ -47,3 +47,4 @@ export interface PostAbsentModel {
   name: string;
   date: string;
 }
+

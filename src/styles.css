@@ -2,6 +2,8 @@
 * {
     margin: 0;
     padding: 0;
+    background-color: #fff;
+    color: #000;
 }
 
 .main-container {
@@ -12,4 +14,6 @@
 
 .content-wrapper {
     flex: 1;
+    width: 1000px;
+    margin: 0 auto;
 }

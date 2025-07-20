@@ -29,15 +29,18 @@ export class HomeComponent {
   addEntry() {
     const entryData: PostEntryModel = {
       amount: this.amount,
-      date: new Date(this.model.year, this.model.month - 1, this.model.day).toISOString(),
+      date: `${this.model.year}-${this.model.month
+        .toString()
+        .padStart(2, '0')}-${this.model.day
+        .toString()
+        .padStart(2, '0')}T00:00:00.000Z`,
       type: this.commissionType as 'Cash' | 'Wholesale',
-      partyName: this.commissionType === 'Cash' ? 'Cash' : this.partyName
+      partyName: this.commissionType === 'Cash' ? 'Cash' : this.partyName,
     };
 
     this.entryService.postEntry(entryData).subscribe({
       next: (response) => {
         console.log('Entry added successfully:', response);
-        // Reset form
         this.amount = 0;
         this.model = this.calendar.getToday();
         this.commissionType = 'Wholesale';

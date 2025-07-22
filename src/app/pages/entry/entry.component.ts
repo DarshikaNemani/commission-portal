@@ -93,7 +93,6 @@ export class EntryComponent {
       next: (data) => {
         this.dailyEntries = data;
         this.isLoadingDaily = false;
-        console.log('Daily entries loaded:', data);
       },
       error: (error) => {
         console.error('Error loading daily entries:', error);
@@ -114,7 +113,6 @@ export class EntryComponent {
         next: (data) => {
           this.monthlyEntries = data;
           this.isLoadingMonthly = false;
-          console.log('Monthly entries loaded:', data);
         },
         error: (error) => {
           console.error('Error loading monthly entries:', error);
@@ -134,7 +132,6 @@ export class EntryComponent {
       next: (data) => {
         this.overallEntries = data;
         this.isLoadingOverall = false;
-        console.log('Overall entries loaded:', data);
       },
       error: (error) => {
         console.error('Error loading overall entries:', error);
@@ -251,7 +248,6 @@ export class EntryComponent {
 
     this.entryService.updateEntry(this.editingEntry._id, updateData).subscribe({
       next: (response) => {
-        console.log('Entry updated successfully:', response);
         this.cancelEdit();
         this.loadDailyEntries();
       },
@@ -265,7 +261,6 @@ export class EntryComponent {
     if (confirm('Are you sure you want to delete this entry?')) {
       this.entryService.deleteEntry(entryId).subscribe({
         next: (response) => {
-          console.log('Entry deleted successfully:', response);
           this.loadDailyEntries();
         },
         error: (error) => {

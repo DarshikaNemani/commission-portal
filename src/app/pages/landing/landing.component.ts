@@ -59,7 +59,6 @@ getDayName(): string {
       next: (data) => {
         this.dailyEntries = data;
         this.isLoadingDaily = false;
-        console.log('Daily entries loaded:', data);
       },
       error: (error) => {
         console.error('Error loading daily entries:', error);
@@ -80,7 +79,6 @@ getDayName(): string {
         next: (data) => {
           this.monthlyEntries = data;
           this.isLoadingMonthly = false;
-          console.log('Monthly entries loaded:', data);
         },
         error: (error) => {
           console.error('Error loading monthly entries:', error);
@@ -100,7 +98,6 @@ getDayName(): string {
       next: (data) => {
         this.overallEntries = data;
         this.isLoadingOverall = false;
-        console.log('Overall entries loaded:', data);
       },
       error: (error) => {
         console.error('Error loading overall entries:', error);

@@ -18,17 +18,18 @@ export class LoginComponent {
 
   adminLogin() {
     if (!this.password) {
-      console.error('Please enter password');
+      alert('Please enter password');
       return;
     }
 
     this.adminService.adminLogin(this.password).subscribe({
       next: (response) => {
-        console.log('Login successful:', response);
+        alert('Login successful');
         this.password = '';
       },
       error: (error) => {
         console.error('Login failed:', error);
+        alert('Login Failed, Try again'); 
       }
     });
   }

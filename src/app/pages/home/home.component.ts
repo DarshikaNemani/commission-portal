@@ -82,7 +82,6 @@ deleteParty(partyId: string, event: Event) {
   if (confirm('Are you sure you want to delete this party?')) {
     this.partyService.deleteParty(partyId).subscribe({
       next: (response) => {
-        console.log('Party deleted:', response);
         this.loadParties();
         // Reset selection if the deleted party was selected
         if (this.selectedParty === this.parties.find(p => p._id === partyId)?.name) {
@@ -112,7 +111,6 @@ resetForm() {
     this.partyService.getParties().subscribe({
       next: (parties) => {
         this.parties = parties.filter(party => party.name.trim() !== '');
-        console.log('Parties loaded:', this.parties);
       },
       error: (error) => {
         console.error('Error loading parties:', error);
@@ -144,7 +142,6 @@ resetForm() {
 
     this.entryService.postEntry(entryData).subscribe({
       next: (response) => {
-        console.log('Entry added successfully:', response);
         this.resetForm();
         if (this.addParty) {
           this.loadParties();
@@ -165,7 +162,6 @@ resetForm() {
 
     this.entryService.bulkEntry(bulkData).subscribe({
       next: (response) => {
-        console.log('Bulk entries added successfully:', response);
         this.resetForm();
       },
       error: (error) => {

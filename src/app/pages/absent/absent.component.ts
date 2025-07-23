@@ -40,18 +40,18 @@ export class AbsentComponent implements OnInit {
       return;
     }
 
+    // Use consistent date format like home component
+    const dateString = `${this.model.year}-${this.model.month.toString().padStart(2, '0')}-${this.model.day.toString().padStart(2, '0')}`;
+    
     const absentData: PostAbsentModel = {
       name: this.selectedEmployee,
-      date: new Date(this.model.year, this.model.month - 1, this.model.day).toISOString()
+      date: `${dateString}T00:00:00.000Z`
     };
 
     this.absentService.postAbsent(absentData).subscribe({
       next: (response) => {
-        console.log('Absent added successfully:', response);
-        // Reset form
         this.selectedEmployee = 'Select Employee';
         this.model = this.calendar.getToday();
-        // Reload absent records
         this.loadAbsentRecords();
       },
       error: (error) => {
@@ -63,8 +63,8 @@ export class AbsentComponent implements OnInit {
   loadAbsentRecords() {
     this.absentService.getAbsents().subscribe({
       next: (data) => {
-        this.absentRecords = data;
-        console.log('Absent records loaded:', data);
+        // Filter out corrupted records
+        this.absentRecords = data.filter((record: any) => record.date);
       },
       error: (error) => {
         console.error('Error loading absent records:', error);
@@ -73,7 +73,16 @@ export class AbsentComponent implements OnInit {
   }
 
   formatDate(dateString: string): string {
-    const date = new Date(dateString);
-    return date.toLocaleDateString();
+    if (!dateString) return 'No Date';
+    
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return 'Invalid Date';
+      }
+      return date.toLocaleDateString();
+    } catch (error) {
+      return 'Invalid Date';
+    }
   }
 }

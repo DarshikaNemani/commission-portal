@@ -33,7 +33,6 @@ export class AdminService {
   adminLogin(password: string): Observable<any> {
     return this.httpService.postApi('/api/admin/login', { password }).pipe(
       tap((response) => {
-        console.log('Admin login successful:', response);
         
         // Save to session storage with timestamp
         const loginData = {

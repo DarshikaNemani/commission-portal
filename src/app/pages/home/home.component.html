@@ -35,7 +35,6 @@
                         </label>
                     </div>
 
-                    <!-- Party selection for Wholesale WITHOUT bulk -->
                     <div *ngIf="commissionType === 'Wholesale' && !amount.includes(',')" class="mb-3">
                         <div class="dropdown" [class.show]="isDropdownOpen">
                             <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button"
@@ -62,7 +61,6 @@
                         </div>
                     </div>
 
-                    <!-- New party input -->
                     <div *ngIf="addParty" class="mt-2">
                         <div class="input-group">
                             <input class="form-control" placeholder="Enter new party name" [(ngModel)]="partyName"

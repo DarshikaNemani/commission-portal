@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { AbsentComponent } from './pages/absent/absent.component';
 import { CommissionComponent } from './pages/commission/commission.component';
 import { LandingComponent } from './pages/landing/landing.component';
+import { DevComponent } from './pages/dev/dev.component';
 
 export const routes: Routes = [
   {
@@ -30,5 +31,9 @@ export const routes: Routes = [
   {
     path:'commission',
     component:CommissionComponent
+  },
+  {
+    path:'dev',
+    component:DevComponent
   }
 ];

@@ -49,10 +49,8 @@ export class CommissionComponent implements OnInit {
   loadAbsents() {
     this.absentService.getAbsents().subscribe({
       next: (data) => {
-        // Filter out corrupted records without dates
         this.absents = data.filter((absent: any) => absent.date);
 
-        // Calculate commission AFTER absents are loaded
         this.calculateCommission();
       },
       error: (error) => {
@@ -107,7 +105,6 @@ export class CommissionComponent implements OnInit {
         .filter((entry) => entry.type === 'Wholesale')
         .reduce((sum, entry) => sum + entry.amount, 0);
 
-      // Simplified date comparison
       const absentToday = this.absents
         .filter((absent) => {
           if (!absent?.date) return false;

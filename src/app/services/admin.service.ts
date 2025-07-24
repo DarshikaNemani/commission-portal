@@ -34,7 +34,6 @@ export class AdminService {
     return this.httpService.postApi('/api/admin/login', { password }).pipe(
       tap((response) => {
         
-        // Save to session storage with timestamp
         const loginData = {
           isLoggedIn: true,
           timestamp: new Date().getTime()

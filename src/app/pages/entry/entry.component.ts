@@ -63,7 +63,6 @@ export class EntryComponent {
     this.selectedMonth = this.model.month;
     this.loadDailyEntries();
 
-    // Subscribe to admin login status
     this.adminService.isLoggedIn$.subscribe(isLoggedIn => {
       this.isAdminLoggedIn = isLoggedIn;
     });

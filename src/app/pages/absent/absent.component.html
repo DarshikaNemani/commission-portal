@@ -30,14 +30,12 @@
             </div>
         </div>
 
-        <!-- Display Absent Records -->
         <div class="card text-center" *ngFor="let absent of absentRecords">
             <div class="card-body">
                 <p>{{ absent.name }} - {{ formatDate(absent.date) }}</p>
             </div>
         </div>
 
-        <!-- No Records Message -->
         <div class="card text-center" *ngIf="absentRecords.length === 0">
             <div class="card-body">
                 <p>No absent records found</p>

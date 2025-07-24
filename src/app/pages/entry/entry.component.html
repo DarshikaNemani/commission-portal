@@ -14,7 +14,6 @@
             </ul>
         </div>
 
-        <!-- Daily Section -->
         <div class="daily-main" *ngIf="activeSection === 'daily'">
             <div class="head-container">
                 <div>
@@ -34,7 +33,6 @@
                 </div>
             </form>
 
-            <!-- Loading state -->
             <div *ngIf="isLoadingDaily" class="text-center my-3">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -42,13 +40,11 @@
                 <p>Loading daily entries...</p>
             </div>
 
-            <!-- Error state -->
             <div *ngIf="dailyError && !isLoadingDaily" class="alert alert-danger" role="alert">
                 {{ dailyError }}
                 <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadDaily()">Retry</button>
             </div>
 
-            <!-- Data display -->
             <div class="card" *ngIf="dailyEntries && !isLoadingDaily && !dailyError">
                 <div class="card-body">
                     <p class="card-title">Total Cash: ₹{{ dailyEntries.totalCash | number:'1.2-2' }}</p>
@@ -56,11 +52,9 @@
                     <p class="">Total Entries: {{ dailyEntries.totalEntries }}</p>
                 </div>
             </div>
-            <!-- Daily Entry Cards -->
             <div *ngIf="dailyEntries && dailyEntries.entries && !isLoadingDaily && !dailyError">
                 <div class="card mb-2" *ngFor="let entry of dailyEntries.entries">
                     <div class="card-body">
-                        <!-- Normal view -->
                         <div *ngIf="!isEditing || editingEntry._id !== entry._id">
                             <p class="card-title">{{ entry.type }}</p>
                             <p *ngIf="entry.type === 'Wholesale'" class="card-text">Party: {{ entry.partyName }}</p>
@@ -75,7 +69,6 @@
                             </button>
                         </div>
 
-                        <!-- Edit view -->
                         <div *ngIf="isEditing && editingEntry._id === entry._id">
                             <div class="mb-3">
                                 <label class="form-label">Amount</label>
@@ -112,7 +105,6 @@
             </div>
         </div>
 
-        <!-- Monthly Section -->
         <div class="monthly-main" *ngIf="activeSection === 'monthly'">
             <div>
                 <h1>Monthly Entries</h1>
@@ -132,7 +124,6 @@
             </form>
 
 
-            <!-- Loading state -->
             <div *ngIf="isLoadingMonthly" class="text-center my-3">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -140,13 +131,11 @@
                 <p>Loading monthly entries...</p>
             </div>
 
-            <!-- Error state -->
             <div *ngIf="monthlyError && !isLoadingMonthly" class="alert alert-danger" role="alert">
                 {{ monthlyError }}
                 <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadMonthly()">Retry</button>
             </div>
 
-            <!-- Data display -->
             <div class="card" *ngIf="monthlyEntries && !isLoadingMonthly && !monthlyError">
                 <div class="card-body">
                     <p class="card-title">Total Cash: ₹{{ monthlyEntries.totalCash | number:'1.2-2' }}</p>
@@ -154,7 +143,6 @@
                     <p class="text-muted">Total Entries: {{ monthlyEntries.totalEntries }}</p>
                 </div>
             </div>
-            <!-- Monthly Entry Cards -->
             <div *ngIf="monthlyEntries && monthlyEntries.entries && !isLoadingMonthly && !monthlyError">
                 <div class="card mb-2" *ngFor="let entry of getDateWiseSummary(monthlyEntries.entries)">
                     <div class="card-body">
@@ -166,14 +154,12 @@
             </div>
         </div>
 
-        <!-- Overall Section -->
         <div class="overall-main" *ngIf="activeSection === 'overall'">
             <div>
                 <h1>Overall Entries</h1>
                 <p>All-time summary</p>
             </div>
 
-            <!-- Loading state -->
             <div *ngIf="isLoadingOverall" class="text-center my-3">
                 <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -181,13 +167,11 @@
                 <p>Loading overall entries...</p>
             </div>
 
-            <!-- Error state -->
             <div *ngIf="overallError && !isLoadingOverall" class="alert alert-danger" role="alert">
                 {{ overallError }}
                 <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadOverall()">Retry</button>
             </div>
 
-            <!-- Data display -->
             <div class="card" *ngIf="overallEntries && !isLoadingOverall && !overallError">
                 <div class="card-body">
                     <h5 class="card-title">Summary</h5>
@@ -212,7 +196,6 @@
                     </div>
                 </div>
             </div>
-            <!-- Overall Entry Cards -->
             <div *ngIf="overallEntries && overallEntries.entries && !isLoadingOverall && !overallError">
                 <div class="card mb-2" *ngFor="let entry of getMonthWiseSummary(overallEntries.entries)">
                     <div class="card-body">

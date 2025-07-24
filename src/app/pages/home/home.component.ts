@@ -43,7 +43,6 @@ export class HomeComponent implements OnInit {
 
 isDropdownOpen: boolean = false;
 
-// Change from select dropdown to custom
 toggleDropdown() {
   this.isDropdownOpen = !this.isDropdownOpen;
 }
@@ -75,7 +74,6 @@ cancelAddParty() {
   this.partyName = '';
 }
 
-// Update deleteParty for dropdown
 deleteParty(partyId: string, event: Event) {
   event.preventDefault();
   event.stopPropagation();
@@ -83,7 +81,6 @@ deleteParty(partyId: string, event: Event) {
     this.partyService.deleteParty(partyId).subscribe({
       next: (response) => {
         this.loadParties();
-        // Reset selection if the deleted party was selected
         if (this.selectedParty === this.parties.find(p => p._id === partyId)?.name) {
           this.selectedParty = '';
         }
@@ -95,7 +92,6 @@ deleteParty(partyId: string, event: Event) {
   }
 }
 
-// Update resetForm for dropdown state
 resetForm() {
   this.amount = '';
   this.model = this.calendar.getToday();

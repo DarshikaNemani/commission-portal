@@ -1,39 +1,32 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { EntryComponent } from './pages/entry/entry.component';
-import { LoginComponent } from './pages/login/login.component';
-import { AbsentComponent } from './pages/absent/absent.component';
-import { CommissionComponent } from './pages/commission/commission.component';
-import { LandingComponent } from './pages/landing/landing.component';
-import { DevComponent } from './pages/dev/dev.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LandingComponent
+    loadComponent: () => import('./pages/landing/landing.component').then(m => m.LandingComponent)
   },
   {
     path: 'home',
-    component: HomeComponent,
+    loadComponent: () => import('./pages/home/home.component').then(m => m.HomeComponent)
   },
   {
     path: 'entry',
-    component: EntryComponent,
+    loadComponent: () => import('./pages/entry/entry.component').then(m => m.EntryComponent)
   },
   {
     path: 'admin',
-    component: LoginComponent
+    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
   },
   {
     path: 'absent',
-    component: AbsentComponent
+    loadComponent: () => import('./pages/absent/absent.component').then(m => m.AbsentComponent)
   },
   {
-    path:'commission',
-    component:CommissionComponent
+    path: 'commission',
+    loadComponent: () => import('./pages/commission/commission.component').then(m => m.CommissionComponent)
   },
   {
-    path:'dev',
-    component:DevComponent
+    path: 'dev',
+    loadComponent: () => import('./pages/dev/dev.component').then(m => m.DevComponent)
   }
 ];

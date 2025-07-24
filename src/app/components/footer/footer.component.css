@@ -1,13 +1,46 @@
 .footer {
-    padding: 8px;
-    border-top: 8px solid #fff;
-    border-bottom: 8px solid #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    
-    p{
-        margin: 0;
-    }
+  background: rgba(255, 255, 255, 0.5) !important;
+  backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1rem 0;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.brand-icon {
+  width: 28px;
+  height: 28px;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white !important;
+  font-size: 0.9rem;
+}
+
+.brand-icon i {
+  background: transparent !important;
+  color: white !important;
+}
+
+.brand-text {
+  font-size: 1rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: #2563eb;
+}
+
+.copyright-text {
+  color: #6b7280 !important;
+  font-size: 0.8rem;
+  margin: 0 !important;
+  background: transparent !important;
 }

@@ -1,46 +1,108 @@
-<div class="main-container">
-    <app-navbar />
-    <div class="content-wrapper">
+<div class="d-flex flex-column min-vh-100 bg-gradient">
+    <app-navbar></app-navbar>
 
-        <div class="card text-center">
-            <div class="card-body">
-                <h5 class="card-title">Add Absent</h5>
-                <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        {{ selectedEmployee }}
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><button class="dropdown-item" (click)="selectEmployee('Arjun')">Arjun</button></li>
-                        <li><button class="dropdown-item" (click)="selectEmployee('Brijesh')">Brijesh</button></li>
-                        <li><button class="dropdown-item" (click)="selectEmployee('Chirag')">Chirag</button></li>
-                    </ul>
+    <main class="flex-grow-1">
+        <div class="container-fluid px-4 py-4">
+            <div class="row mb-4">
+                <div class="col-12">
+                    <h1 class="display-6 fw-bold text-dark mb-2">Absentee Records</h1>
                 </div>
-                <form class="row row-cols-sm-auto">
-                    <div class="col-12">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
-                                ngbDatepicker #d="ngbDatepicker" />
-                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                                <i class="bi bi-calendar3"></i>
-                            </button>
+            </div>
+
+            <div class="row mb-4 form-section">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0 glass-card">
+                        <div class="card-header bg-transparent border-0">
+                            <h5 class="mb-0">Add Absent</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row g-4 align-items-end">
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Select Employee</label>
+                                    <div class="dropdown">
+                                        <button
+                                            class="btn btn-outline-secondary dropdown-toggle w-100 text-start form-height"
+                                            type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ selectedEmployee || 'Select Employee' }}
+                                        </button>
+                                        <ul class="dropdown-menu w-100 shadow">
+                                            <li><button class="dropdown-item py-2"
+                                                    (click)="selectEmployee('Arjun')">Arjun</button></li>
+                                            <li><button class="dropdown-item py-2"
+                                                    (click)="selectEmployee('Brijesh')">Brijesh</button></li>
+                                            <li><button class="dropdown-item py-2"
+                                                    (click)="selectEmployee('Chirag')">Chirag</button></li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label class="form-label fw-bold">Date</label>
+                                    <div class="input-group shadow-sm">
+                                        <input class="form-control form-height" placeholder="Select date" name="dp"
+                                            [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary" (click)="d.toggle()"
+                                            type="button"><i class="bi bi-calendar3"></i></button>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <button class="btn btn-primary w-100 shadow-sm btn-gradient form-height"
+                                        (click)="submitAbsent()">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </form>
-                <button class="btn btn-primary" (click)="submitAbsent()">Submit</button>
+                </div>
             </div>
-        </div>
 
-        <div class="card text-center" *ngFor="let absent of absentRecords">
-            <div class="card-body">
-                <p>{{ absent.name }} - {{ formatDate(absent.date) }}</p>
-            </div>
-        </div>
+            <div class="row records-section">
+                <div class="col-12">
+                    <div class="card shadow-sm border-0 glass-card">
+                        <div class="card-header bg-transparent border-0">
+                            <h5 class="mb-0">Recent Absent Records</h5>
+                        </div>
+                        <div class="card-body">
+                            <div *ngIf="absentRecords.length > 0; else noRecords">
+                                <div class="row">
+                                    <div class="col-md-6 col-lg-4 mb-3" *ngFor="let absent of absentRecords">
+                                        <div class="card border-0 shadow-sm h-100 record-card">
+                                            <div class="card-body">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-circle me-3">
+                                                            {{ absent.name?.charAt(0) || 'N' }}
+                                                        </div>
+                                                        <div>
+                                                            <h6 class="mb-1 fw-bold">{{ absent.name }}</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-end">
+                                                        <div class="d-flex align-items-center text-muted">
+                                                            <span class="fw-medium">{{ formatDate(absent.date) }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-        <div class="card text-center" *ngIf="absentRecords.length === 0">
-            <div class="card-body">
-                <p>No absent records found</p>
+                            <ng-template #noRecords>
+                                <div class="text-center py-5">
+                                    <h6 class="text-muted mb-2">No Absent Records</h6>
+                                    <p class="text-muted">No employees are marked as absent for the selected period.</p>
+                                </div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <app-footer />
+    </main>
+
+    <app-footer></app-footer>
 </div>

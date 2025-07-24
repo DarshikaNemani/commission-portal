@@ -1,43 +1,107 @@
-.content-wrapper{
-    flex-direction: column;
+.bg-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #e8eaf6 100%);
 }
 
-.daily-main {
-    margin-top: 20px;
+main {
+    margin: 0 15rem;
 }
 
-.head-container {
-    display: flex;
-    justify-content: space-between;
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
 }
 
-button {
-    color: #000;
-    border: 2px solid #000;
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card {
     border-radius: 12px;
+    transition: all 0.2s ease;
 }
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+}
+
+.cash-card {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.wholesale-card {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+}
+
+.entries-card {
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.overall-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 248, 255, 0.9) 100%);
+    backdrop-filter: blur(10px);
+}
+
+.summary-card {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+.form-control,
+.form-select {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
 .dropdown-menu {
-    padding: 0;
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
 }
 
-form {
-    margin: 24px 0;
+.dropdown-item {
+    border-radius: 4px;
+    margin: 2px 4px;
+    transition: all 0.2s ease;
 }
 
-.dropdown {
-    margin-top: 12px;
-    text-align: end;
+.dropdown-item:hover {
+    background-color: #f8fafc;
 }
 
-.ngb-dp-content {
-    color: #000;
+.badge {
+    font-weight: 500;
+    padding: 0.5em 0.75em;
 }
 
-.card-body {
-    border: 2px solid #000;
-    border-radius: 12px;
+.alert {
+    border-radius: 8px;
+    border: none;
+}
 
-    p{
-        color: #000;
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+@media (max-width: 768px) {
+    .display-6 {
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    main {
+        margin: 0 0.5rem;
     }
 }

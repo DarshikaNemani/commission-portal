@@ -49,10 +49,7 @@ export class CommissionComponent implements OnInit {
   loadAbsents() {
     this.absentService.getAbsents().subscribe({
       next: (data) => {
-        // Filter out corrupted records without dates
         this.absents = data.filter((absent: any) => absent.date);
-
-        // Calculate commission AFTER absents are loaded
         this.calculateCommission();
       },
       error: (error) => {
@@ -107,7 +104,6 @@ export class CommissionComponent implements OnInit {
         .filter((entry) => entry.type === 'Wholesale')
         .reduce((sum, entry) => sum + entry.amount, 0);
 
-      // Simplified date comparison
       const absentToday = this.absents
         .filter((absent) => {
           if (!absent?.date) return false;
@@ -147,5 +143,35 @@ export class CommissionComponent implements OnInit {
     } catch (error) {
       return 'Invalid Date';
     }
+  }
+
+  // New helper methods for the enhanced UI
+  getTotalCommission(): number {
+    return Object.values(this.commissions).reduce((sum: number, commission: any) => sum + commission, 0);
+  }
+
+  getAverageCommission(): number {
+    const total = this.getTotalCommission();
+    return total / this.employees.length;
+  }
+
+  getTopPerformer(): string {
+    let topEmp = '';
+    let maxCommission = 0;
+    
+    for (const emp of this.employees) {
+      if (this.commissions[emp] > maxCommission) {
+        maxCommission = this.commissions[emp];
+        topEmp = emp;
+      }
+    }
+    
+    return topEmp || 'None';
+  }
+
+  getCommissionRanking(): {name: string, commission: number}[] {
+    return this.employees
+      .map(emp => ({name: emp, commission: this.commissions[emp] || 0}))
+      .sort((a, b) => b.commission - a.commission);
   }
 }

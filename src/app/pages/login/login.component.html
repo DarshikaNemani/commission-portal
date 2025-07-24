@@ -1,13 +1,39 @@
-<div class="main-container">
-    <app-navbar />
-    <div class="content-wrapper">
+<div class="d-flex flex-column vh-100 bg-login">
+    <app-navbar></app-navbar>
 
-        <div class="admin-main card card-body">
-            <h1>Admin Login</h1>
-            <label for="password">Enter Password</label>
-            <input type="password" [(ngModel)]="password" id="password" class="form-control">
-            <button class="btn btn-primary mt-2" (click)="adminLogin()">Login</button>
+    <main class="flex-grow-1 d-flex align-items-center">
+        <div class="container-fluid px-4 py-4 w-100">
+            <div class="row mb-4 text-center">
+                <div class="col-12">
+                    <h1 class="display-6 fw-bold text-dark mb-2">Admin Login</h1>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-lg-4">
+                    <div class="card shadow-sm border-0 glass-card">
+                        <div class="card-header bg-transparent border-0 text-center">
+                            <h5 class="mb-0">Admin Access</h5>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="mb-4">
+                                <label for="password" class="form-label fw-bold">Password</label>
+                                <div class="input-group shadow-sm">
+                                    <input type="password" [(ngModel)]="password" id="password" class="form-control"
+                                        placeholder="Enter admin password" />
+                                </div>
+                            </div>
+
+                            <button class="btn btn-primary w-100 shadow-sm btn-gradient" (click)="adminLogin()">
+                                Login
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <app-footer />
+    </main>
+
+    <app-footer></app-footer>
 </div>

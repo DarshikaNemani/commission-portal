@@ -1,87 +1,123 @@
-<div class="main-container">
-    <app-navbar />
-    <div class="content-wrapper">
-        <div class="home-main">
-            <div class="card">
-                <div class="card-title">Add Commission Entry</div>
-                <div class="card-body">
-                    <input class="form-control" name="Amount" type="text"
-                        placeholder="Amount (use comma for bulk: 100, 200, 300)" [(ngModel)]="amount" />
+<div class="d-flex flex-column vh-100 bg-gradient">
+    <app-navbar></app-navbar>
 
-                    <form class="row row-cols-sm-auto">
-                        <div class="col-12">
-                            <div class="input-group">
-                                <input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
-                                    ngbDatepicker #d="ngbDatepicker" />
-                                <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                                    <i class="bi bi-calendar3"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="commissionType" id="cash" value="Cash"
-                            [(ngModel)]="commissionType">
-                        <label class="form-check-label" for="cash">
-                            Cash
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="commissionType" id="wholesale"
-                            value="Wholesale" [(ngModel)]="commissionType">
-                        <label class="form-check-label" for="wholesale">
-                            Wholesale
-                        </label>
-                    </div>
-
-                    <!-- Party selection for Wholesale WITHOUT bulk -->
-                    <div *ngIf="commissionType === 'Wholesale' && !amount.includes(',')" class="mb-3">
-                        <div class="dropdown" [class.show]="isDropdownOpen">
-                            <button class="btn btn-outline-secondary dropdown-toggle w-100 text-start" type="button"
-                                (click)="toggleDropdown()" [attr.aria-expanded]="isDropdownOpen">
-                                {{ selectedParty || 'Select Party' }}
-                            </button>
-
-                            <div class="dropdown-menu w-100" [class.show]="isDropdownOpen">
-                                <div *ngFor="let party of parties" class="dropdown-item-wrapper">
-                                    <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
-                                        (click)="selectPartyFromDropdown(party.name, $event)">
-                                        <span>{{ party.name }}</span>
-                                        <button *ngIf="isAdminLoggedIn" type="button"
-                                            class="btn btn-sm btn-outline-danger ms-2"
-                                            (click)="deleteParty(party._id, $event)" title="Delete party">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </a>
-                                </div>
-                                <a class="dropdown-item" href="#" (click)="showAddPartyInput($event)">
-                                    Other
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- New party input -->
-                    <div *ngIf="addParty" class="mt-2">
-                        <div class="input-group">
-                            <input class="form-control" placeholder="Enter new party name" [(ngModel)]="partyName"
-                                (keyup.enter)="confirmAddParty()" />
-                            <button class="btn btn-success" type="button" (click)="confirmAddParty()"
-                                [disabled]="!partyName.trim()">
-                                Add
-                            </button>
-                            <button class="btn btn-secondary" type="button" (click)="cancelAddParty()">
-                                Cancel
-                            </button>
-                        </div>
-                    </div>
-
-
+    <main class="flex-grow-1 overflow-auto">
+        <div class="container-fluid px-4 py-4">
+            <div class="row align-items-center justify-content-between mb-4">
+                <div class="col-md-8">
+                    <h1 class="page-title">Add Commission Entry</h1>
                 </div>
-                <button class="btn btn-primary" (click)="addEntry()">Add Entry</button>
+                <div class="col-md-4 text-end">
+                    <div class="date-display">
+                        {{ model.day }}/{{ model.month }}/{{ model.year }}, {{ getDayName() }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row justify-content-center">
+                <div class="col-lg-10 col-xl-8">
+                    <div class="glass-card">
+                        <div class="card-header">
+                            <h3 class="card-title">
+                                Commission Entry Form
+                            </h3>
+                        </div>
+
+                        <div class="card-body">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Amount</label>
+                                    <input class="form-control modern-input" type="text"
+                                        placeholder="Amount (100,200,300)" [(ngModel)]="amount" />
+                                    <small class="form-text">Comma-separated values allowed for bulk entry</small>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label">Date</label>
+                                    <div class="input-group">
+                                        <input class="form-control modern-input" name="dp" [(ngModel)]="model"
+                                            ngbDatepicker #d="ngbDatepicker" />
+                                        <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
+                                            <i class="bi bi-calendar3"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Commission Type</label>
+                                    <div class="radio-group">
+                                        <div class="form-check custom-radio">
+                                            <input class="form-check-input" type="radio" name="commissionType" id="cash"
+                                                value="Cash" [(ngModel)]="commissionType" />
+                                            <label class="form-check-label" for="cash">Cash</label>
+                                        </div>
+                                        <div class="form-check custom-radio">
+                                            <input class="form-check-input" type="radio" name="commissionType"
+                                                id="wholesale" value="Wholesale" [(ngModel)]="commissionType" />
+                                            <label class="form-check-label" for="wholesale">Wholesale</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="commissionType==='Wholesale' && !amount.includes(',')" class="col-12">
+                                    <label class="form-label">Party Selection</label>
+                                    <div class="dropdown" [class.show]="isDropdownOpen">
+                                        <button class="btn modern-dropdown w-100 text-start" type="button"
+                                            (click)="toggleDropdown()" [attr.aria-expanded]="isDropdownOpen">
+                                            <span>{{ selectedParty || 'Select Party' }}</span>
+                                            <i class="bi bi-chevron-down ms-auto"></i>
+                                        </button>
+
+                                        <div class="dropdown-menu w-100" [class.show]="isDropdownOpen">
+                                            <a *ngFor="let party of parties"
+                                                class="dropdown-item modern-dropdown-item d-flex align-items-center"
+                                                href="#" (click)="selectPartyFromDropdown(party.name,$event)">
+                                                {{ party.name }}
+                                                <button *ngIf="isAdminLoggedIn"
+                                                    class="btn btn-sm btn-outline-danger ms-auto"
+                                                    (click)="deleteParty(party._id,$event)">
+                                                    <i class="bi bi-trash"></i>
+                                                </button>
+                                            </a>
+
+                                            <div class="dropdown-divider"></div>
+
+                                            <a class="dropdown-item modern-dropdown-item add-new" href="#"
+                                                (click)="showAddPartyInput($event)">
+                                                Add New Party
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div *ngIf="addParty" class="col-12">
+                                    <label class="form-label">New Party Name</label>
+                                    <div class="input-group">
+                                        <input class="form-control modern-input" placeholder="Enter new party name"
+                                            [(ngModel)]="partyName" (keyup.enter)="confirmAddParty()" />
+                                        <button class="btn btn-success" type="button" (click)="confirmAddParty()"
+                                            [disabled]="!partyName.trim()">
+                                            <i class="bi bi-check-lg"></i>
+                                        </button>
+                                        <button class="btn btn-outline-secondary" type="button"
+                                            (click)="cancelAddParty()">
+                                            <i class="bi bi-x-lg"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 text-center">
+                                    <button class="btn submit-btn" (click)="addEntry()" [disabled]="!amount.trim()">
+                                        <i class="bi bi-plus-lg me-2"></i>Add Entry
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <app-footer />
+    </main>
+
+    <app-footer></app-footer>
 </div>

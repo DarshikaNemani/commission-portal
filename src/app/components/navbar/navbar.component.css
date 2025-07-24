@@ -1,24 +1,193 @@
-.navbar .container-fluid {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1400px;
-
-  .navbar-brand {
-    color: #000;
-  }
+.bg-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #e8eaf6 100%);
 }
 
-.navbar-collapse {
-  flex-grow: 0;
+.main-content {
+    margin: 0 1rem;
+    padding-bottom: 2rem;
+}
 
-  .nav-item {
-    .nav-link {
-      color: #000;
+.navbar {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(12px) !important;
+    -webkit-backdrop-filter: blur(12px) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1) !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 1060 !important;
+}
 
-      &:hover {
-        color: #007bff;
-      }
+.brand-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white !important;
+    font-size: 1rem;
+    box-shadow: 0 2px 4px rgba(37, 99, 235, 0.3);
+}
+
+.brand-icon i {
+    background: transparent !important;
+    color: white !important;
+}
+
+.brand-text {
+    font-weight: 700 !important;
+    font-size: 1.3rem;
+    background: linear-gradient(135deg, #2563eb, #4f46e5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: #2563eb;
+    display: inline-block;
+}
+
+.navbar-brand {
+    text-decoration: none !important;
+}
+
+.nav-link {
+    color: #4b5563 !important;
+    font-weight: 500;
+    padding: 0.5rem 1rem !important;
+    margin: 0 0.25rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #2563eb !important;
+    background: rgba(37, 99, 235, 0.1);
+}
+
+.nav-link.active {
+    color: #2563eb !important;
+    background: rgba(37, 99, 235, 0.15);
+    font-weight: 600;
+}
+
+.logout-btn {
+    border: none !important;
+    background: none !important;
+}
+
+.logout-btn:hover {
+    background: rgba(239, 68, 68, 0.1) !important;
+    color: #dc2626 !important;
+}
+
+.navbar-toggler {
+    color: #4b5563;
+    border: none;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+}
+
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border-radius: 12px;
+        margin-top: 1rem;
+        padding: 1rem;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.2);
     }
-  }
+    
+    .nav-link {
+        padding: 0.75rem 1rem !important;
+        margin: 0.25rem 0;
+    }
+}
+
+.container-fluid {
+    max-width: 1400px;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    border: none;
+    color: white;
+}
+
+.card {
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+.date-section {
+    position: relative;
+    z-index: 100;
+}
+
+.input-group {
+    position: relative;
+    z-index: 50;
+}
+
+.ngb-dp-popup {
+    z-index: 1060 !important;
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .display-6 {
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    .main-content {
+        margin: 0 0.5rem;
+    }
 }

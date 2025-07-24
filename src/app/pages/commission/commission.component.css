@@ -1,0 +1,87 @@
+.bg-gradient {
+    background: linear-gradient(135deg, #f8fafc 0%, #e0f2fe 50%, #e8eaf6 100%);
+}
+
+main {
+    margin: 0 15rem;
+}
+
+.glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    transition: transform 0.2s ease;
+}
+
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-gradient {
+    background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+    border: none;
+    color: white;
+}
+
+.card {
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.form-control {
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    transition: all 0.2s ease;
+}
+
+.form-control:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.25);
+}
+
+.date-section {
+    position: relative;
+    z-index: 100;
+}
+
+.input-group {
+    position: relative;
+    z-index: 50;
+}
+
+.ngb-dp-popup {
+    z-index: 1060 !important;
+}
+
+.avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    border-radius: 50%;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .display-5 {
+        font-size: 1.5rem;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+
+    main {
+        margin: 0 0.5rem;
+    }
+}

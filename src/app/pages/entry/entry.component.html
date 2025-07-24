@@ -1,229 +1,351 @@
-<div class="main-container">
-    <app-navbar />
-    <div class="content-wrapper">
+<div class="d-flex flex-column min-vh-100 bg-gradient">
+    <app-navbar></app-navbar>
 
-        <div class="dropdown">
-            <button class="btn dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Summary
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                <li><button class="dropdown-item" (click)="showSection('daily')">Daily Entries</button></li>
-                <li><button class="dropdown-item" (click)="showSection('monthly')">Monthly Summary</button></li>
-                <li><button class="dropdown-item" (click)="showSection('overall')">Overall Summary</button></li>
-            </ul>
-        </div>
-
-        <!-- Daily Section -->
-        <div class="daily-main" *ngIf="activeSection === 'daily'">
-            <div class="head-container">
-                <div>
-                    <h1>Daily Entries</h1>
-                    <p>Entries on {{ model.day }}/{{ model.month }}/{{ model.year }}</p>
+    <main class="flex-grow-1">
+        <div class="container-fluid px-4 py-4">
+            <div class="row mb-4">
+                <div class="col-md-8">
+                    <h1 class="display-6 fw-bold text-dark mb-2">Entry Summary</h1>
                 </div>
-            </div>
-            <form class="row row-cols-sm-auto">
-                <div class="col-12">
-                    <div class="input-group">
-                        <input class="form-control text-white" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="model"
-                            ngbDatepicker #d="ngbDatepicker" (ngModelChange)="onDateChange()" />
-                        <button class="btn btn-outline-secondary text-white" (click)="d.toggle()" type="button">
-                            <i class="bi bi-calendar3"></i>
+                <div class="col-md-4 d-flex justify-content-end align-items-center">
+                    <div class="dropdown">
+                        <button class="btn btn-outline-primary dropdown-toggle shadow-sm" type="button"
+                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            View Summary
                         </button>
-                    </div>
-                </div>
-            </form>
-
-            <!-- Loading state -->
-            <div *ngIf="isLoadingDaily" class="text-center my-3">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p>Loading daily entries...</p>
-            </div>
-
-            <!-- Error state -->
-            <div *ngIf="dailyError && !isLoadingDaily" class="alert alert-danger" role="alert">
-                {{ dailyError }}
-                <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadDaily()">Retry</button>
-            </div>
-
-            <!-- Data display -->
-            <div class="card" *ngIf="dailyEntries && !isLoadingDaily && !dailyError">
-                <div class="card-body">
-                    <p class="card-title">Total Cash: ₹{{ dailyEntries.totalCash | number:'1.2-2' }}</p>
-                    <p class="card-title">Total Wholesale: ₹{{ dailyEntries.totalWholesale | number:'1.2-2' }}</p>
-                    <p class="">Total Entries: {{ dailyEntries.totalEntries }}</p>
-                </div>
-            </div>
-            <!-- Daily Entry Cards -->
-            <div *ngIf="dailyEntries && dailyEntries.entries && !isLoadingDaily && !dailyError">
-                <div class="card mb-2" *ngFor="let entry of dailyEntries.entries">
-                    <div class="card-body">
-                        <!-- Normal view -->
-                        <div *ngIf="!isEditing || editingEntry._id !== entry._id">
-                            <p class="card-title">{{ entry.type }}</p>
-                            <p *ngIf="entry.type === 'Wholesale'" class="card-text">Party: {{ entry.partyName }}</p>
-                            <p class="card-text">Amount: ₹{{ entry.amount | number:'1.2-2' }}</p>
-                            <button *ngIf="isAdminLoggedIn" class="btn btn-outline-primary me-2"
-                                (click)="editEntry(entry)">
-                                Edit
-                            </button>
-                            <button *ngIf="isAdminLoggedIn" class="btn btn-outline-danger"
-                                (click)="deleteEntry(entry._id)">
-                                Delete
-                            </button>
-                        </div>
-
-                        <!-- Edit view -->
-                        <div *ngIf="isEditing && editingEntry._id === entry._id">
-                            <div class="mb-3">
-                                <label class="form-label">Amount</label>
-                                <input type="number" class="form-control" [(ngModel)]="editingEntry.amount">
-                            </div>
-
-                            <div class="mb-3" *ngIf="editingEntry.type === 'Wholesale'">
-                                <label class="form-label">Party Name</label>
-                                <input type="text" class="form-control" [(ngModel)]="editingEntry.partyName">
-                            </div>
-
-                            <div class="mb-3">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="editType" id="editCash"
-                                        value="Cash" [(ngModel)]="editingEntry.type">
-                                    <label class="form-check-label" for="editCash">Cash</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="editType" id="editWholesale"
-                                        value="Wholesale" [(ngModel)]="editingEntry.type">
-                                    <label class="form-check-label" for="editWholesale">Wholesale</label>
-                                </div>
-                            </div>
-
-                            <button class="btn btn-success me-2" (click)="updateEntry()">
-                                Save
-                            </button>
-                            <button class="btn btn-secondary" (click)="cancelEdit()">
-                                Cancel
-                            </button>
-                        </div>
+                        <ul class="dropdown-menu shadow" aria-labelledby="dropdownMenuButton1">
+                            <li><button class="dropdown-item" (click)="showSection('daily')">Daily Entries</button></li>
+                            <li><button class="dropdown-item" (click)="showSection('monthly')">Monthly Summary</button>
+                            </li>
+                            <li><button class="dropdown-item" (click)="showSection('overall')">Overall Summary</button>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Monthly Section -->
-        <div class="monthly-main" *ngIf="activeSection === 'monthly'">
-            <div>
-                <h1>Monthly Entries</h1>
-                <p>Entries in {{ selectedMonth }}/{{ model.year }}</p>
-            </div>
-            <form class="row row-cols-sm-auto">
-                <div class="col-12">
+            <div *ngIf="activeSection === 'daily'">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h2 class="h4 text-dark mb-1">Daily Entries</h2>
+                        <p class="text-muted">Entries on {{ model.day }}/{{ model.month }}/{{ model.year }}</p>
+                    </div>
                     <div class="col-md-4">
-                        <select id="inputState" class="form-select" [value]="selectedMonth"
-                            (change)="onMonthChange($event)">
-                            <option *ngFor="let num of numbers" value="{{num}}">{{num}}</option>
-                        </select>
-                        <input class="form-control mt-2" name="dp" [(ngModel)]="model.year" type="number"
-                            (ngModelChange)="onYearChange()" />
+                        <div class="input-group shadow-sm">
+                            <input class="form-control" placeholder="Select date" name="dp" [(ngModel)]="model"
+                                ngbDatepicker #d="ngbDatepicker" (ngModelChange)="onDateChange()" />
+                            <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
+                                <i class="bi bi-calendar3"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </form>
 
-
-            <!-- Loading state -->
-            <div *ngIf="isLoadingMonthly" class="text-center my-3">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
+                <div *ngIf="isLoadingDaily" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Loading daily entries...</p>
                 </div>
-                <p>Loading monthly entries...</p>
-            </div>
 
-            <!-- Error state -->
-            <div *ngIf="monthlyError && !isLoadingMonthly" class="alert alert-danger" role="alert">
-                {{ monthlyError }}
-                <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadMonthly()">Retry</button>
-            </div>
+                <div *ngIf="dailyError && !isLoadingDaily" class="alert alert-danger shadow-sm" role="alert">
+                    {{ dailyError }}
+                    <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadDaily()">Retry</button>
+                </div>
 
-            <!-- Data display -->
-            <div class="card" *ngIf="monthlyEntries && !isLoadingMonthly && !monthlyError">
-                <div class="card-body">
-                    <p class="card-title">Total Cash: ₹{{ monthlyEntries.totalCash | number:'1.2-2' }}</p>
-                    <p class="card-title">Total Wholesale: ₹{{ monthlyEntries.totalWholesale | number:'1.2-2' }}</p>
-                    <p class="text-muted">Total Entries: {{ monthlyEntries.totalEntries }}</p>
+                <div class="row mb-4" *ngIf="dailyEntries && !isLoadingDaily && !dailyError">
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 shadow-sm border-0 cash-card">
+                            <div class="card-body text-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="card-text opacity-75 mb-1">Total Cash</p>
+                                        <h3 class="card-title mb-1">₹{{ dailyEntries.totalCash | number:'1.2-2' }}</h3>
+                                        <small class="opacity-75">Cash transactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 shadow-sm border-0 wholesale-card">
+                            <div class="card-body text-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="card-text opacity-75 mb-1">Total Wholesale</p>
+                                        <h3 class="card-title mb-1">₹{{ dailyEntries.totalWholesale | number:'1.2-2' }}
+                                        </h3>
+                                        <small class="opacity-75">Wholesale transactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="card h-100 shadow-sm border-0 entries-card">
+                            <div class="card-body text-white">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <p class="card-text opacity-75 mb-1">Total Entries</p>
+                                        <h3 class="card-title mb-1">{{ dailyEntries.totalEntries }}</h3>
+                                        <small class="opacity-75">All transactions</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="dailyEntries && dailyEntries.entries && !isLoadingDaily && !dailyError">
+                    <div class="card shadow-sm border-0 mb-4 glass-card">
+                        <div class="card-header bg-transparent border-0">
+                            <h5 class="mb-0">Transaction Details</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row" *ngFor="let entry of dailyEntries.entries">
+                                <div class="col-12">
+                                    <div class="card mb-3 border-0 shadow-sm"
+                                        [ngClass]="entry.type === 'Cash' ? 'border-start border-success border-4' : 'border-start border-primary border-4'">
+                                        <div class="card-body" *ngIf="!isEditing || editingEntry._id !== entry._id">
+                                            <div class="d-flex justify-content-between align-items-start">
+                                                <div class="flex-grow-1">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <span class="badge"
+                                                            [ngClass]="entry.type === 'Cash' ? 'bg-success' : 'bg-primary'">
+                                                            {{ entry.type }}
+                                                        </span>
+                                                        <h6 class="ms-2 mb-0 fw-bold">₹{{ entry.amount | number:'1.2-2'
+                                                            }}</h6>
+                                                    </div>
+                                                    <p *ngIf="entry.type === 'Wholesale'" class="text-muted mb-0">
+                                                        {{ entry.partyName }}
+                                                    </p>
+                                                </div>
+                                                <div class="btn-group" *ngIf="isAdminLoggedIn" role="group">
+                                                    <button class="btn btn-outline-primary btn-sm"
+                                                        (click)="editEntry(entry)">Edit</button>
+                                                    <button class="btn btn-outline-danger btn-sm"
+                                                        (click)="deleteEntry(entry._id)">Delete</button>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="card-body" *ngIf="isEditing && editingEntry._id === entry._id">
+                                            <form>
+                                                <div class="row">
+                                                    <div class="col-md-6 mb-3">
+                                                        <label class="form-label fw-bold">Amount</label>
+                                                        <div class="input-group">
+                                                            <span class="input-group-text">₹</span>
+                                                            <input type="number" class="form-control"
+                                                                [(ngModel)]="editingEntry.amount" name="amount">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 mb-3"
+                                                        *ngIf="editingEntry.type === 'Wholesale'">
+                                                        <label class="form-label fw-bold">Party Name</label>
+                                                        <input type="text" class="form-control"
+                                                            [(ngModel)]="editingEntry.partyName" name="partyName">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Transaction Type</label>
+                                                    <div class="d-flex gap-3">
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="editType"
+                                                                id="editCash" value="Cash"
+                                                                [(ngModel)]="editingEntry.type">
+                                                            <label class="form-check-label" for="editCash">Cash</label>
+                                                        </div>
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="editType"
+                                                                id="editWholesale" value="Wholesale"
+                                                                [(ngModel)]="editingEntry.type">
+                                                            <label class="form-check-label"
+                                                                for="editWholesale">Wholesale</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="d-flex gap-2">
+                                                    <button type="button" class="btn btn-success"
+                                                        (click)="updateEntry()">Save</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        (click)="cancelEdit()">Cancel</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- Monthly Entry Cards -->
-            <div *ngIf="monthlyEntries && monthlyEntries.entries && !isLoadingMonthly && !monthlyError">
-                <div class="card mb-2" *ngFor="let entry of getDateWiseSummary(monthlyEntries.entries)">
+
+            <div *ngIf="activeSection === 'monthly'">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <h2 class="h4 text-dark mb-1">Monthly Entries</h2>
+                        <p class="text-muted">Entries in {{ selectedMonth }}/{{ model.year }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="row g-2">
+                            <div class="col-6">
+                                <select class="form-select shadow-sm" [value]="selectedMonth"
+                                    (change)="onMonthChange($event)">
+                                    <option *ngFor="let num of numbers" value="{{num}}">Month {{num}}</option>
+                                </select>
+                            </div>
+                            <div class="col-6">
+                                <input class="form-control shadow-sm" name="dp" [(ngModel)]="model.year" type="number"
+                                    (ngModelChange)="onYearChange()" placeholder="Year" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="isLoadingMonthly" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Loading monthly entries...</p>
+                </div>
+
+                <div *ngIf="monthlyError && !isLoadingMonthly" class="alert alert-danger shadow-sm" role="alert">
+                    {{ monthlyError }}
+                    <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadMonthly()">Retry</button>
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4 glass-card"
+                    *ngIf="monthlyEntries && !isLoadingMonthly && !monthlyError">
                     <div class="card-body">
-                        <p class="card-title">{{ entry.date }}</p>
-                        <p class="card-text">Total Cash: ₹{{ entry.totalCash | number:'1.2-2' }}</p>
-                        <p class="card-text">Total Wholesale: ₹{{ entry.totalWholesale | number:'1.2-2' }}</p>
+                        <div class="row text-center">
+                            <div class="col-md-4">
+                                <div class="p-3">
+                                    <h5 class="text-success">₹{{ monthlyEntries.totalCash | number:'1.2-2' }}</h5>
+                                    <p class="text-muted mb-0">Total Cash</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3">
+                                    <h5 class="text-primary">₹{{ monthlyEntries.totalWholesale | number:'1.2-2' }}</h5>
+                                    <p class="text-muted mb-0">Total Wholesale</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="p-3">
+                                    <h5 class="text-info">{{ monthlyEntries.totalEntries }}</h5>
+                                    <p class="text-muted mb-0">Total Entries</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- Overall Section -->
-        <div class="overall-main" *ngIf="activeSection === 'overall'">
-            <div>
-                <h1>Overall Entries</h1>
-                <p>All-time summary</p>
-            </div>
-
-            <!-- Loading state -->
-            <div *ngIf="isLoadingOverall" class="text-center my-3">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-                <p>Loading overall entries...</p>
-            </div>
-
-            <!-- Error state -->
-            <div *ngIf="overallError && !isLoadingOverall" class="alert alert-danger" role="alert">
-                {{ overallError }}
-                <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadOverall()">Retry</button>
-            </div>
-
-            <!-- Data display -->
-            <div class="card" *ngIf="overallEntries && !isLoadingOverall && !overallError">
-                <div class="card-body">
-                    <h5 class="card-title">Summary</h5>
+                <div *ngIf="monthlyEntries && monthlyEntries.entries && !isLoadingMonthly && !monthlyError">
                     <div class="row">
-                        <div class="col-md-6">
-                            <p class="mb-2"><strong>Total Cash:</strong> ₹{{ overallEntries.totalCash | number:'1.2-2'
-                                }}</p>
-                            <p class="mb-2"><strong>Total Wholesale:</strong> ₹{{ overallEntries.totalWholesale |
-                                number:'1.2-2' }}</p>
+                        <div class="col-md-6 col-lg-4 mb-3"
+                            *ngFor="let entry of getDateWiseSummary(monthlyEntries.entries)">
+                            <div class="card h-100 shadow-sm border-0 summary-card">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ entry.date }}</h6>
+                                    <div class="small">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-success">Cash:</span>
+                                            <span class="fw-bold">₹{{ entry.totalCash | number:'1.2-2' }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-primary">Wholesale:</span>
+                                            <span class="fw-bold">₹{{ entry.totalWholesale | number:'1.2-2' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="col-md-6">
-                            <p class="mb-2"><strong>Grand Total:</strong> ₹{{ (overallEntries.totalCash +
-                                overallEntries.totalWholesale) | number:'1.2-2' }}</p>
-                            <p class="mb-2"><strong>Total Entries:</strong> {{ overallEntries.totalEntries }}</p>
-                        </div>
-                    </div>
-                    <div *ngIf="overallEntries.dateRange" class="mt-3">
-                        <small class="text-muted">
-                            <i class="bi bi-calendar-range"></i>
-                            Date Range: {{ overallEntries.dateRange.from }} to {{ overallEntries.dateRange.to }}
-                        </small>
-                    </div>
-                </div>
-            </div>
-            <!-- Overall Entry Cards -->
-            <div *ngIf="overallEntries && overallEntries.entries && !isLoadingOverall && !overallError">
-                <div class="card mb-2" *ngFor="let entry of getMonthWiseSummary(overallEntries.entries)">
-                    <div class="card-body">
-                        <p class="card-title">{{ entry.month }}/{{ entry.year }}</p>
-                        <p class="card-text">Total Cash: ₹{{ entry.totalCash | number:'1.2-2' }}</p>
-                        <p class="card-text">Total Wholesale: ₹{{ entry.totalWholesale | number:'1.2-2' }}</p>
                     </div>
                 </div>
             </div>
 
+            <div *ngIf="activeSection === 'overall'">
+                <div class="mb-4">
+                    <h2 class="h4 text-dark mb-1">Overall Entries</h2>
+                </div>
+
+                <div *ngIf="isLoadingOverall" class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted">Loading overall entries...</p>
+                </div>
+
+                <div *ngIf="overallError && !isLoadingOverall" class="alert alert-danger shadow-sm" role="alert">
+                    {{ overallError }}
+                    <button class="btn btn-sm btn-outline-danger ms-2" (click)="retryLoadOverall()">Retry</button>
+                </div>
+
+                <div class="card shadow-sm border-0 mb-4 overall-card"
+                    *ngIf="overallEntries && !isLoadingOverall && !overallError">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3">
+                                    <h4 class="text-success">₹{{ overallEntries.totalCash | number:'1.2-2' }}</h4>
+                                    <p class="text-muted mb-0">Total Cash</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3">
+                                    <h4 class="text-primary">₹{{ overallEntries.totalWholesale | number:'1.2-2' }}</h4>
+                                    <p class="text-muted mb-0">Total Wholesale</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3">
+                                    <h4 class="text-warning">₹{{ (overallEntries.totalCash +
+                                        overallEntries.totalWholesale) | number:'1.2-2' }}</h4>
+                                    <p class="text-muted mb-0">Grand Total</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <div class="p-3">
+                                    <h4 class="text-info">{{ overallEntries.totalEntries }}</h4>
+                                    <p class="text-muted mb-0">Total Entries</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="overallEntries.dateRange" class="text-center mt-3">
+                            <small class="text-muted">
+                                Date Range: {{ overallEntries.dateRange.from }} to {{ overallEntries.dateRange.to }}
+                            </small>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="overallEntries && overallEntries.entries && !isLoadingOverall && !overallError">
+                    <div class="row">
+                        <div class="col-md-6 col-lg-4 mb-3"
+                            *ngFor="let entry of getMonthWiseSummary(overallEntries.entries)">
+                            <div class="card h-100 shadow-sm border-0 summary-card">
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ entry.month }}/{{ entry.year }}</h6>
+                                    <div class="small">
+                                        <div class="d-flex justify-content-between mb-1">
+                                            <span class="text-success">Cash:</span>
+                                            <span class="fw-bold">₹{{ entry.totalCash | number:'1.2-2' }}</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <span class="text-primary">Wholesale:</span>
+                                            <span class="fw-bold">₹{{ entry.totalWholesale | number:'1.2-2' }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <app-footer />
+    </main>
+
+    <app-footer></app-footer>
 </div>

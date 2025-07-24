@@ -1,100 +1,194 @@
-/* Custom styles to match the reference design */
-.bg-light {
-  background-color: #f8f9fa !important;
+.bg-gradient {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e0f2fe 50%, #f0f9ff 100%);
 }
 
-.chart-container {
-  width: 100%;
-  height: 300px;
-  display: flex;
-  justify-content: center;
+main {
+  margin: 0 10rem;
+}
+
+.hero-card {
+  background: linear-gradient(135deg, #2563eb, #4f46e5);
+  border-radius: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  padding: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.hero-content {
+  position: relative;
+  z-index: 10;
+}
+
+.hero-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-btn {
+  background: white;
+  color: #2563eb;
+  padding: 0.5rem 1.5rem;
+  border-radius: 1.5rem;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-flex;
   align-items: center;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+  transition: all 0.2s ease;
 }
 
-.routecard{
-    cursor: pointer;
+.hero-btn:hover {
+  color: #2563eb;
+  transform: scale(1.03);
 }
 
-#myChart {
-  max-width: 100%;
-  max-height: 100%;
+.datetime-card {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 0.75rem;
+  padding: 1rem;
+  color: white;
 }
 
-.card {
-  border: 1px solid rgba(0, 0, 0, 0.075);
+.date-text, .time-text {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 1rem;
+}
+
+.glass-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1f2937;
+  margin-bottom: 0;
+}
+
+.period-badge {
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  border-radius: 1.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.badge-daily {
+  background: rgba(59, 130, 246, 0.1);
+  color: #1d4ed8;
+  border: 1px solid rgba(59, 130, 246, 0.2);
+}
+
+.badge-monthly {
+  background: rgba(34, 197, 94, 0.1);
+  color: #15803d;
+  border: 1px solid rgba(34, 197, 94, 0.2);
+}
+
+.badge-yearly {
+  background: rgba(168, 85, 247, 0.1);
+  color: #7c3aed;
+  border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.sales-metrics {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.metric-card {
+  padding: 0.75rem;
   border-radius: 0.5rem;
+  border: 1px solid;
 }
 
-.shadow-sm {
-  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+.cash-card {
+  background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+  border-color: #bbf7d0;
 }
 
-.display-4 {
-  font-size: 2.5rem;
+.wholesale-card {
+  background: linear-gradient(135deg, #eff6ff, #dbeafe);
+  border-color: #bfdbfe;
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #6b7280;
+}
+
+.cash-card .metric-label {
+  color: #059669;
+}
+
+.wholesale-card .metric-label {
+  color: #2563eb;
+}
+
+.metric-value {
+  font-size: 1.25rem;
   font-weight: 700;
+  margin: 0;
 }
 
-.display-6 {
-  font-size: 1.875rem;
-  font-weight: 700;
+.cash-card .metric-value {
+  color: #047857;
 }
 
-a{
-    text-decoration: none;
-    color: #000;
-}
-.btn-link:hover {
-  background-color: rgba(99, 102, 241, 0.1);
-  border-radius: 0.375rem;
+.wholesale-card .metric-value {
+  color: #1d4ed8;
 }
 
-/* Responsive adjustments */
+.chart-wrapper {
+  position: relative;
+  width: 100%;
+  height: 240px;
+  margin-top: 1rem;
+}
+
 @media (max-width: 768px) {
-  .display-4 {
-    font-size: 2rem;
+  .hero-title {
+    font-size: 1.75rem;
   }
   
-  .display-6 {
-    font-size: 1.5rem;
+  .hero-card {
+    padding: 1.5rem 1rem;
   }
   
-  .chart-container {
-    height: 250px;
+  .datetime-card {
+    margin-top: 1rem;
+    text-align: center;
+  }
+  
+  main {
+    margin: 0 0.5rem;
   }
 }
-
-
-/* #myChart {
-    width: 50% !important;
-    height: 20vh !important;
-} */
-
-/* .home-main {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    margin-top: 150px;
-}
-.home-pages-list {
-    margin-top: 20px;
-    display: flex;
-    gap: 20px;
-}
-
-.home-pages-list a {
-    border: 1px solid #000;
-    border-radius: 12px;
-    background: transparent;
-    color: #000;
-    padding: 10px 20px;
-    cursor: pointer;
-    text-decoration: none;
-    display: block;
-    width: 100%;
-
-    &:hover {
-        color: #007bff;
-    }
-} */

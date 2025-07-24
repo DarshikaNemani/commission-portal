@@ -17,7 +17,6 @@ import {
 export class EntryService {
   constructor(private readonly httpService: HttpService) {}
 
-  // Helper method to calculate totals from entry array
   private calculateTotals(entries: EntryModel[]): EntrySummary {
     const totalCash = entries
       .filter((entry) => entry.type === 'Cash')
@@ -35,7 +34,6 @@ export class EntryService {
     };
   }
 
-  // Helper method to get date range from entries
   private getDateRange(
     entries: EntryModel[]
   ): { from: string; to: string } | undefined {
@@ -50,7 +48,6 @@ export class EntryService {
     };
   }
 
-  // POST method (existing)
   postEntry(entryData: PostEntryModel): Observable<any> {
     return this.httpService.postApi('/api/entries/', entryData).pipe(
       tap((response) => console.log('Entry posted successfully:', response)),
@@ -61,7 +58,6 @@ export class EntryService {
     );
   }
 
-  // GET methods with calculation
   getDayEntries(date: string): Observable<DayEntriesResponse> {
     return this.httpService.getApi(`/api/entries/day?date=${date}`).pipe(
       map((entries: EntryModel[]) => {
@@ -120,7 +116,6 @@ export class EntryService {
     );
   }
 
-  // Additional methods for other API endpoints
   getPartyNames(): Observable<string[]> {
     return this.httpService.getApi('/api/entries/parties').pipe(
       tap((response) => console.log('Party names response:', response)),
@@ -144,28 +139,24 @@ export class EntryService {
       })
     );
   }
-  
-  // PUT method - Update entry
-updateEntry(entryId: string, entryData: PostEntryModel): Observable<any> {
-  return this.httpService.putApi(`/api/entries/${entryId}`, entryData).pipe(
-    tap((response) => console.log('Entry updated successfully:', response)),
-    catchError((error) => {
-      console.error('Error updating entry:', error);
-      return throwError(() => error);
-    })
-  );
-}
 
-// DELETE method - Delete entry
-deleteEntry(entryId: string): Observable<any> {
-  return this.httpService.deleteApi(`/api/entries/${entryId}`).pipe(
-    tap((response) => console.log('Entry deleted successfully:', response)),
-    catchError((error) => {
-      console.error('Error deleting entry:', error);
-      return throwError(() => error);
-    })
-  );
-}
+  updateEntry(entryId: string, entryData: PostEntryModel): Observable<any> {
+    return this.httpService.putApi(`/api/entries/${entryId}`, entryData).pipe(
+      tap((response) => console.log('Entry updated successfully:', response)),
+      catchError((error) => {
+        console.error('Error updating entry:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 
-
+  deleteEntry(entryId: string): Observable<any> {
+    return this.httpService.deleteApi(`/api/entries/${entryId}`).pipe(
+      tap((response) => console.log('Entry deleted successfully:', response)),
+      catchError((error) => {
+        console.error('Error deleting entry:', error);
+        return throwError(() => error);
+      })
+    );
+  }
 }

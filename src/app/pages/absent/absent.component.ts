@@ -40,7 +40,6 @@ export class AbsentComponent implements OnInit {
       return;
     }
 
-    // Use consistent date format like home component
     const dateString = `${this.model.year}-${this.model.month.toString().padStart(2, '0')}-${this.model.day.toString().padStart(2, '0')}`;
     
     const absentData: PostAbsentModel = {
@@ -63,7 +62,6 @@ export class AbsentComponent implements OnInit {
   loadAbsentRecords() {
     this.absentService.getAbsents().subscribe({
       next: (data) => {
-        // Filter out corrupted records
         this.absentRecords = data.filter((record: any) => record.date);
       },
       error: (error) => {

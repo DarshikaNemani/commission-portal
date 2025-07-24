@@ -2,7 +2,7 @@ import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { NgbDateStruct, NgbCalendar } from '@ng-bootstrap/ng-bootstrap';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
   DayEntriesResponse,
@@ -11,54 +11,41 @@ import {
 } from '../../services/models';
 import { EntryService } from '../../services/entry.service';
 import { AbsentService } from '../../services/absent.service';
-import { Chart, registerables, ChartConfiguration } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
 
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-landing',
-  imports: [NavbarComponent, FooterComponent, RouterLink, RouterLinkActive, CommonModule],
+  imports: [NavbarComponent, FooterComponent, RouterLink, CommonModule],
   standalone: true,
   templateUrl: './landing.component.html',
   styleUrl: './landing.component.css',
 })
 export class LandingComponent implements OnInit, AfterViewInit {
   model: NgbDateStruct;
-  selectedMonth: number;
-
   dailyEntries: DayEntriesResponse | null = null;
   monthlyEntries: MonthEntriesResponse | null = null;
   overallEntries: OverallEntriesResponse | null = null;
-
   employees = ['Arjun', 'Brijesh', 'Chirag'];
   absents: any[] = [];
   chart: any;
 
   constructor(
-    readonly calendar: NgbCalendar, 
-    private absentService: AbsentService, 
-    private readonly entryService: EntryService
+    readonly calendar: NgbCalendar,
+    private absentService: AbsentService,
+    private entryService: EntryService
   ) {
     this.model = this.calendar.getToday();
-    this.selectedMonth = this.model.month;
   }
 
   ngOnInit(): void {
-    this.loadAllData();
+    this.loadData();
     this.loadAbsents();
   }
 
   ngAfterViewInit(): void {
-    // Ensure DOM is ready before creating chart
-    setTimeout(() => {
-      this.createChart();
-    }, 100);
-  }
-
-  loadAllData() {
-    this.loadDailyEntries();
-    this.loadMonthlyEntries();
-    this.loadOverallEntries();
+    setTimeout(() => this.createChart(), 200);
   }
 
   getDayName(): string {
@@ -67,43 +54,25 @@ export class LandingComponent implements OnInit, AfterViewInit {
     return days[date.getDay()];
   }
 
-  loadDailyEntries() {
-    const dateString = `${this.model.year}-${this.model.month
-      .toString()
-      .padStart(2, '0')}-${this.model.day.toString().padStart(2, '0')}`;
+  loadData() {
+    const dateString = `${this.model.year}-${this.model.month.toString().padStart(2, '0')}-${this.model.day.toString().padStart(2, '0')}`;
 
+    // Load daily entries
     this.entryService.getDayEntries(dateString).subscribe({
-      next: (data) => {
-        this.dailyEntries = data;
-      },
-      error: (error) => {
-        console.error('Error loading daily entries:', error);
-        this.dailyEntries = null;
-      },
+      next: (data) => this.dailyEntries = data,
+      error: () => this.dailyEntries = null
     });
-  }
 
-  loadMonthlyEntries() {
-    this.entryService.getMonthEntries(this.selectedMonth, this.model.year).subscribe({
-      next: (data) => {
-        this.monthlyEntries = data;
-      },
-      error: (error) => {
-        console.error('Error loading monthly entries:', error);
-        this.monthlyEntries = null;
-      },
+    // Load monthly entries
+    this.entryService.getMonthEntries(this.model.month, this.model.year).subscribe({
+      next: (data) => this.monthlyEntries = data,
+      error: () => this.monthlyEntries = null
     });
-  }
 
-  loadOverallEntries() {
+    // Load overall entries
     this.entryService.getOverallEntries().subscribe({
-      next: (data) => {
-        this.overallEntries = data;
-      },
-      error: (error) => {
-        console.error('Error loading overall entries:', error);
-        this.overallEntries = null;
-      },
+      next: (data) => this.overallEntries = data,
+      error: () => this.overallEntries = null
     });
   }
 
@@ -113,31 +82,26 @@ export class LandingComponent implements OnInit, AfterViewInit {
         this.absents = data.filter((absent: any) => absent.date);
         this.updateChart();
       },
-      error: (error) => {
-        console.error('Error loading absents:', error);
-        this.updateChart();
-      }
+      error: () => this.updateChart()
     });
   }
 
   createChart() {
-    if (this.chart) {
-      this.chart.destroy();
-    }
+    if (this.chart) this.chart.destroy();
 
     const ctx = document.getElementById('myChart') as HTMLCanvasElement;
     if (!ctx) return;
 
-    const config: ChartConfiguration<'pie'> = {
+    this.chart = new Chart(ctx, {
       type: 'pie',
       data: {
         labels: ['Present', 'Absent'],
         datasets: [{
-          label: 'Employee Attendance Today',
-          data: [3, 0], // Default values
-          backgroundColor: ['#4CAF50', '#DC2626'],
+          data: [3, 0],
+          backgroundColor: ['#10b981', '#ef4444'],
           borderColor: ['#FFFFFF', '#FFFFFF'],
-          borderWidth: 2
+          borderWidth: 2,
+          hoverOffset: 4
         }]
       },
       options: {
@@ -145,30 +109,41 @@ export class LandingComponent implements OnInit, AfterViewInit {
         maintainAspectRatio: false,
         plugins: {
           legend: {
-            position: 'top',
-            labels: {
-              boxWidth: 12,
-              padding: 20
-            }
+            position: 'bottom',
+            labels: { boxWidth: 12, padding: 15, font: { size: 12 } }
           },
-          title: {
-            display: false  ,
-            text: 'Employee Attendance Today'
-          },
+          title: { display: false },
           tooltip: {
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            titleColor: '#1f2937',
+            bodyColor: '#6b7280',
+            borderColor: '#e5e7eb',
+            borderWidth: 1,
+            cornerRadius: 8,
             callbacks: {
               label: (context) => {
+                const today = new Date().toISOString().split('T')[0];
+                const absentToday = this.absents
+                  .filter(absent => absent.date.split('T')[0] === today)
+                  .map(absent => absent.name);
+                const presentToday = this.employees.filter(emp => !absentToday.includes(emp));
+                
                 const label = context.label;
                 const count = context.parsed;
+                
+                if (label === 'Present' && presentToday.length > 0) {
+                  return `${label} (${count}): ${presentToday.join(', ')}`;
+                } else if (label === 'Absent' && absentToday.length > 0) {
+                  return `${label} (${count}): ${absentToday.join(', ')}`;
+                }
                 return `${label}: ${count}`;
               }
             }
           }
         }
       }
-    };
+    });
 
-    this.chart = new Chart(ctx, config);
     this.updateChart();
   }
 
@@ -176,14 +151,12 @@ export class LandingComponent implements OnInit, AfterViewInit {
     if (!this.chart) return;
 
     const today = new Date().toISOString().split('T')[0];
-    
     const absentToday = this.absents
       .filter(absent => absent.date.split('T')[0] === today)
       .map(absent => absent.name);
-    
     const presentToday = this.employees.filter(emp => !absentToday.includes(emp));
-    
+
     this.chart.data.datasets[0].data = [presentToday.length, absentToday.length];
-    this.chart.update();
+    this.chart.update('none');
   }
 }

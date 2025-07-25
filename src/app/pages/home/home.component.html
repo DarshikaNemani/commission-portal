@@ -1,7 +1,7 @@
-<div class="d-flex flex-column vh-100 bg-gradient">
+<div class="d-flex flex-column min-vh-100 bg-gradient">
     <app-navbar></app-navbar>
 
-    <main class="flex-grow-1 overflow-auto">
+    <main class="flex-grow-1">
         <div class="container-fluid px-4 py-4">
             <div class="row align-items-center justify-content-between mb-4">
                 <div class="col-md-8">
@@ -18,26 +18,27 @@
                 <div class="col-lg-10 col-xl-8">
                     <div class="glass-card">
                         <div class="card-header">
-                            <h3 class="card-title">
-                                Commission Entry Form
-                            </h3>
+                            <h3 class="card-title">Commission Entry Form</h3>
                         </div>
-
                         <div class="card-body">
                             <div class="row g-4">
                                 <div class="col-md-6">
-                                    <label class="form-label">Amount</label>
-                                    <input class="form-control modern-input" type="text"
-                                        placeholder="Amount (100,200,300)" [(ngModel)]="amount" />
+                                    <label class="form-label" for="amountInput">Amount</label>
+                                    <input id="amountInput" class="form-control modern-input" type="text" 
+                                        inputmode="decimal" pattern="^[0-9,.]+$" 
+                                        placeholder="Amount (100, 200, 300)" [(ngModel)]="amount"
+                                        (keydown)="preventInvalidKeys($event)" (input)="onAmountInput()" 
+                                        [disabled]="isSubmitting" />
                                     <small class="form-text">Comma-separated values allowed for bulk entry</small>
                                 </div>
-
                                 <div class="col-md-6">
-                                    <label class="form-label">Date</label>
+                                    <label class="form-label" for="dateInput">Date</label>
                                     <div class="input-group">
-                                        <input class="form-control modern-input" name="dp" [(ngModel)]="model"
-                                            ngbDatepicker #d="ngbDatepicker" />
-                                        <button class="btn btn-outline-secondary" type="button" (click)="d.toggle()">
+                                        <input id="dateInput" class="form-control modern-input" name="dp" 
+                                            [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker" 
+                                            [disabled]="isSubmitting" />
+                                        <button class="btn btn-outline-secondary" type="button" 
+                                            (click)="d.toggle()" [disabled]="isSubmitting">
                                             <i class="bi bi-calendar3"></i>
                                         </button>
                                     </div>
@@ -47,24 +48,27 @@
                                     <label class="form-label">Commission Type</label>
                                     <div class="radio-group">
                                         <div class="form-check custom-radio">
-                                            <input class="form-check-input" type="radio" name="commissionType" id="cash"
-                                                value="Cash" [(ngModel)]="commissionType" />
+                                            <input class="form-check-input" type="radio" name="commissionType" 
+                                                id="cash" value="Cash" [(ngModel)]="commissionType" 
+                                                [disabled]="isSubmitting" />
                                             <label class="form-check-label" for="cash">Cash</label>
                                         </div>
                                         <div class="form-check custom-radio">
                                             <input class="form-check-input" type="radio" name="commissionType"
-                                                id="wholesale" value="Wholesale" [(ngModel)]="commissionType" />
+                                                id="wholesale" value="Wholesale" [(ngModel)]="commissionType" 
+                                                [disabled]="isSubmitting" />
                                             <label class="form-check-label" for="wholesale">Wholesale</label>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div *ngIf="commissionType==='Wholesale' && !amount.includes(',')" class="col-12">
-                                    <label class="form-label">Party Selection</label>
+                                    <label class="form-label" for="partySelect">Party Selection</label>
                                     <div class="dropdown" [class.show]="isDropdownOpen">
-                                        <button class="btn modern-dropdown w-100 text-start" type="button"
-                                            (click)="toggleDropdown()" [attr.aria-expanded]="isDropdownOpen">
-                                            <span>{{ selectedParty || 'Select Party' }}</span>
+                                        <button id="partySelect" class="btn d-flex modern-dropdown w-100 text-start" 
+                                            type="button" (click)="toggleDropdown()" 
+                                            [attr.aria-expanded]="isDropdownOpen" [disabled]="isSubmitting">
+                                            <span>{{ selectedParty || 'Select Party ' }}</span>
                                             <i class="bi bi-chevron-down ms-auto"></i>
                                         </button>
 
@@ -80,8 +84,6 @@
                                                 </button>
                                             </a>
 
-                                            <div class="dropdown-divider"></div>
-
                                             <a class="dropdown-item modern-dropdown-item add-new" href="#"
                                                 (click)="showAddPartyInput($event)">
                                                 Add New Party
@@ -91,24 +93,32 @@
                                 </div>
 
                                 <div *ngIf="addParty" class="col-12">
-                                    <label class="form-label">New Party Name</label>
+                                    <label class="form-label" for="newPartyInput">New Party Name</label>
                                     <div class="input-group">
-                                        <input class="form-control modern-input" placeholder="Enter new party name"
-                                            [(ngModel)]="partyName" (keyup.enter)="confirmAddParty()" />
+                                        <input id="newPartyInput" class="form-control modern-input" 
+                                            placeholder="Enter new party name" [(ngModel)]="partyName" 
+                                            (keyup.enter)="confirmAddParty()" [disabled]="isSubmitting" />
                                         <button class="btn btn-success" type="button" (click)="confirmAddParty()"
-                                            [disabled]="!partyName.trim()">
+                                            [disabled]="!partyName.trim() || isSubmitting">
                                             <i class="bi bi-check-lg"></i>
                                         </button>
                                         <button class="btn btn-outline-secondary" type="button"
-                                            (click)="cancelAddParty()">
+                                            (click)="cancelAddParty()" [disabled]="isSubmitting">
                                             <i class="bi bi-x-lg"></i>
                                         </button>
                                     </div>
                                 </div>
 
                                 <div class="col-12 text-center">
-                                    <button class="btn submit-btn" (click)="addEntry()" [disabled]="!amount.trim()">
-                                        <i class="bi bi-plus-lg me-2"></i>Add Entry
+                                    <button class="btn submit-btn" (click)="addEntry()" 
+                                        [disabled]="!amount.trim() || isSubmitting">
+                                        <span *ngIf="!isSubmitting">
+                                            <i class="bi bi-plus-lg me-2"></i>Add Entry
+                                        </span>
+                                        <span *ngIf="isSubmitting">
+                                            <span class="spinner-border spinner-border-sm me-2"></span>
+                                            Adding...
+                                        </span>
                                     </button>
                                 </div>
                             </div>
@@ -120,4 +130,16 @@
     </main>
 
     <app-footer></app-footer>
+
+    <div *ngIf="showToast" class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1200;">
+        <div class="toast show" [class]="'toast-' + toastType">
+            <div class="toast-header">
+                <i class="bi me-2" [class.bi-check-circle]="toastType === 'success'" 
+                   [class.bi-exclamation-triangle]="toastType === 'error'"></i>
+                <strong class="me-auto">{{ toastType === 'success' ? 'Success' : 'Error' }}</strong>
+                <button type="button" class="btn-close" (click)="showToast = false"></button>
+            </div>
+            <div class="toast-body">{{ toastMessage }}</div>
+        </div>
+    </div>
 </div>

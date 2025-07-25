@@ -26,6 +26,10 @@ export class HomeComponent implements OnInit {
   parties: PartyModel[] = [];
   isAdminLoggedIn = false;
   isDropdownOpen = false;
+  isSubmitting = false;
+  showToast = false;
+  toastMessage = '';
+  toastType: 'success' | 'error' = 'success';
 
   constructor(
     readonly calendar: NgbCalendar,
@@ -46,17 +50,20 @@ export class HomeComponent implements OnInit {
     return ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][d.getDay()];
   }
 
-  toggleDropdown(): void {
-    this.isDropdownOpen = !this.isDropdownOpen;
+  displayToast(message: string, type: 'success' | 'error' = 'success') {
+    this.toastMessage = message;
+    this.toastType = type;
+    this.showToast = true;
+    setTimeout(() => this.showToast = false, 3000);
   }
 
+  toggleDropdown(): void { this.isDropdownOpen = !this.isDropdownOpen; }
   selectPartyFromDropdown(name: string, e: Event): void {
     e.preventDefault();
     this.selectedParty = name;
     this.addParty = false;
     this.isDropdownOpen = false;
   }
-
   showAddPartyInput(e: Event): void {
     e.preventDefault();
     this.addParty = true;
@@ -64,31 +71,26 @@ export class HomeComponent implements OnInit {
     this.isDropdownOpen = false;
     this.partyName = '';
   }
-
   confirmAddParty(): void {
     if (this.partyName.trim()) {
       this.selectedParty = this.partyName.trim();
       this.addParty = false;
     }
   }
-
   cancelAddParty(): void {
     this.addParty = false;
     this.partyName = '';
   }
-
   loadParties(): void {
     this.partyService.getParties().subscribe({
       next: parties => (this.parties = parties.filter(p => p.name.trim())),
       error: err  => console.error('Error loading parties:', err)
     });
   }
-
   deleteParty(id: string, e: Event): void {
     e.preventDefault();
     e.stopPropagation();
     if (!confirm('Delete this party?')) return;
-
     this.partyService.deleteParty(id).subscribe({
       next: () => {
         this.loadParties();
@@ -99,12 +101,12 @@ export class HomeComponent implements OnInit {
       error: err => console.error('Error deleting party:', err)
     });
   }
-
   addEntry(): void {
+    if (this.isSubmitting) return;
+    this.isSubmitting = true;
     const dateStr = `${this.model.year}-${String(this.model.month).padStart(2,'0')}-${String(this.model.day).padStart(2,'0')}`;
     this.amount.includes(',') ? this.addBulkEntry(dateStr) : this.addSingleEntry(dateStr);
   }
-
   private addSingleEntry(dateStr: string): void {
     const party = this.commissionType === 'Cash' ? 'Cash' : (this.addParty ? this.partyName : this.selectedParty);
     const data: PostEntryModel = {
@@ -113,26 +115,39 @@ export class HomeComponent implements OnInit {
       type: this.commissionType,
       partyName: party
     };
-
     this.entryService.postEntry(data).subscribe({
-      next: () => { this.resetForm(); if (this.addParty) this.loadParties(); },
-      error: err => console.error('Error adding entry:', err)
+      next: () => {
+        this.resetForm();
+        if (this.addParty) this.loadParties();
+        this.displayToast('Entry added successfully!', 'success');
+        this.isSubmitting = false;
+      },
+      error: err => {
+        console.error('Error adding entry:', err);
+        this.displayToast('Failed to add entry. Please try again.', 'error');
+        this.isSubmitting = false;
+      }
     });
   }
-
   private addBulkEntry(dateStr: string): void {
     const bulk = {
       date: dateStr,
       cash: this.commissionType === 'Cash' ? this.amount : '',
       wholesale: this.commissionType === 'Wholesale' ? this.amount : ''
     };
-
     this.entryService.bulkEntry(bulk).subscribe({
-      next: () => this.resetForm(),
-      error: err => console.error('Error adding bulk entries:', err)
+      next: () => {
+        this.resetForm();
+        this.displayToast('Bulk entries added successfully!', 'success');
+        this.isSubmitting = false;
+      },
+      error: err => {
+        console.error('Error adding bulk entries:', err);
+        this.displayToast('Failed to add bulk entries. Please try again.', 'error');
+        this.isSubmitting = false;
+      }
     });
   }
-
   resetForm(): void {
     this.amount = '';
     this.model  = this.calendar.getToday();
@@ -141,5 +156,13 @@ export class HomeComponent implements OnInit {
     this.selectedParty = '';
     this.addParty = false;
     this.isDropdownOpen = false;
+  }
+
+  preventInvalidKeys(event: KeyboardEvent) {
+    const allowed = ['0','1','2','3','4','5','6','7','8','9',',','.','Backspace','Tab','ArrowLeft','ArrowRight','Delete','Home','End'];
+    if (!allowed.includes(event.key)) event.preventDefault();
+  }
+  onAmountInput() {
+    this.amount = this.amount.replace(/[^0-9.,]/g, '');
   }
 }

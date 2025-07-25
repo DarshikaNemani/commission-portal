@@ -4,6 +4,7 @@
 
 main {
   margin: 0 15rem;
+  padding-bottom: 2rem;
 }
 
 .page-title {
@@ -23,7 +24,6 @@ main {
   font-weight: 600;
 }
 
-/* Enhanced Glass Card with Rotating Border Animation */
 .glass-card {
   position: relative;
   background: rgba(255, 255, 255, 0.8);
@@ -31,7 +31,6 @@ main {
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 0.75rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
   z-index: 1;
 }
 
@@ -62,62 +61,12 @@ main {
   z-index: -1;
 }
 
-/* Animation keyframes */
 @keyframes rotating-gradient {
-  0% {
-    background-position: 0% 50%;
-  }
-  25% {
-    background-position: 100% 50%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  75% {
-    background-position: 0% 100%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-}
-
-/* Alternative simpler rotating border */
-.glass-card-simple {
-  position: relative;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  border-radius: 0.75rem;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
-}
-
-.glass-card-simple::before {
-  content: "";
-  position: absolute;
-  inset: -2px;
-  background: conic-gradient(from 0deg, #3b82f6, #8b5cf6, #06b6d4, #10b981, #3b82f6);
-  border-radius: 0.75rem;
-  z-index: -1;
-  animation: spin 3s linear infinite;
-}
-
-.glass-card-simple::after {
-  content: "";
-  position: absolute;
-  inset: 2px;
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(12px);
-  border-radius: calc(0.75rem - 2px);
-  z-index: -1;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  0% { background-position: 0% 50%; }
+  25% { background-position: 100% 50%; }
+  50% { background-position: 100% 100%; }
+  75% { background-position: 0% 100%; }
+  100% { background-position: 0% 50%; }
 }
 
 .card-header {
@@ -180,20 +129,31 @@ main {
   font-size: 0.9rem;
 }
 
+.dropdown {
+  position: relative;
+  z-index: 1000;
+}
+
 .dropdown-menu {
   border: none;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
   border-radius: 0.5rem;
-  z-index: 1050 !important;
+  z-index: 1055 !important;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  max-height: 200px;
+  overflow-y: auto;
 }
 
 .modern-dropdown-item {
-  padding: 0.5rem 0.875rem;
+  padding: 0.75rem 0.875rem;
   font-size: 0.875rem;
+  transition: all 0.2s ease;
 }
 
 .modern-dropdown-item:hover {
-  background: #f3f4f6;
+  background: rgba(37, 99, 235, 0.1);
+  color: #2563eb;
 }
 
 .submit-btn {
@@ -204,9 +164,10 @@ main {
   border-radius: 0.5rem;
   font-weight: 600;
   transition: 0.2s;
+  min-width: 140px;
 }
 
-.submit-btn:hover {
+.submit-btn:hover:not(:disabled) {
   background: linear-gradient(135deg, #1d4ed8, #3730a3);
   transform: translateY(-1px);
   box-shadow: 0 8px 25px rgba(37, 99, 235, 0.3);
@@ -219,8 +180,33 @@ main {
   box-shadow: none;
 }
 
-.ngb-dp-popup {
-  z-index: 1060 !important;
+.toast-success {
+  border-left: 4px solid #10b981;
+}
+
+.toast-error {
+  border-left: 4px solid #ef4444;
+}
+
+.toast-success .toast-header {
+  color: #065f46;
+}
+
+.toast-error .toast-header {
+  color: #991b1b;
+}
+
+:host ::ng-deep .ngb-dp-popup {
+  z-index: 10000 !important;
+  position: fixed !important;
+}
+
+:host ::ng-deep .ngb-dp-container {
+  z-index: 10000 !important;
+}
+
+:host ::ng-deep ngb-datepicker {
+  z-index: 10000 !important;
 }
 
 @media (max-width: 768px) {

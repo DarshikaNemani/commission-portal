@@ -57,19 +57,16 @@ export class LandingComponent implements OnInit, AfterViewInit {
   loadData() {
     const dateString = `${this.model.year}-${this.model.month.toString().padStart(2, '0')}-${this.model.day.toString().padStart(2, '0')}`;
 
-    // Load daily entries
     this.entryService.getDayEntries(dateString).subscribe({
       next: (data) => this.dailyEntries = data,
       error: () => this.dailyEntries = null
     });
 
-    // Load monthly entries
     this.entryService.getMonthEntries(this.model.month, this.model.year).subscribe({
       next: (data) => this.monthlyEntries = data,
       error: () => this.monthlyEntries = null
     });
 
-    // Load overall entries
     this.entryService.getOverallEntries().subscribe({
       next: (data) => this.overallEntries = data,
       error: () => this.overallEntries = null

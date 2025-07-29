@@ -145,7 +145,6 @@ export class CommissionComponent implements OnInit {
     }
   }
 
-  // New helper methods for the enhanced UI
   getTotalCommission(): number {
     return Object.values(this.commissions).reduce((sum: number, commission: any) => sum + commission, 0);
   }

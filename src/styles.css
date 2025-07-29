@@ -13,10 +13,8 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Remove flex from main-container or adjust it */
 .main-container {
   min-height: 100vh;
-  /* Remove: display: flex; flex-direction: column; */
 }
 
 .content-wrapper {
@@ -24,12 +22,10 @@ body {
   max-width: 1400px;
   margin: 0 auto;
   padding: 0 1rem;
-  /* Add min-height instead of flex */
-  min-height: calc(100vh - 140px); /* Adjust based on navbar + footer height */
+  min-height: calc(100vh - 140px); 
 }
 
-/* Keep app-root flex but ensure it doesn't interfere with navbar */
 app-root {
-  display: block; /* Change from flex to block */
+  display: block; 
   min-height: 100vh;
 }

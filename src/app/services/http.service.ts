@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class HttpService {
-  private readonly baseUrl = 'https://commission-management-be-39hl.vercel.app';
+  private readonly baseUrl = 'https://commission-management-be.vercel.app';
 
   constructor(private readonly http: HttpClient) {}
 
